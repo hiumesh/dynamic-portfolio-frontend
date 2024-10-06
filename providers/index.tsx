@@ -1,5 +1,8 @@
 import { Toaster } from "@/components/ui/toaster";
+import { NextUIProvider } from "@nextui-org/react";
+
 import UseQueryProvider from "./use-query-provider";
+import AppContextProvider from "./app-context";
 
 export default function GlobalProviders({
   children,
@@ -7,11 +10,15 @@ export default function GlobalProviders({
   children: React.ReactNode;
 }) {
   return (
-    <UseQueryProvider>
-      <>
-        {children}
-        <Toaster />
-      </>
-    </UseQueryProvider>
+    <NextUIProvider>
+      <UseQueryProvider>
+        <AppContextProvider>
+          <>
+            {children}
+            <Toaster />
+          </>
+        </AppContextProvider>
+      </UseQueryProvider>
+    </NextUIProvider>
   );
 }
