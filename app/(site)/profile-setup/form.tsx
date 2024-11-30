@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { workDomainOptions } from "@/lib/select-options";
 import { useAppContext } from "@/providers/app-context";
 import { profileSetup } from "@/services/api/users";
-import { CheckIcon } from "@/utils/icons";
+import { CheckIcon } from "@/lib/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Autocomplete, AutocompleteItem, Chip, Input } from "@nextui-org/react";
 import { ReloadIcon } from "@radix-ui/react-icons";

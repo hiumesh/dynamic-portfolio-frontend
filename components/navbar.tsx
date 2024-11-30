@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 import logo from "@/assets/svgs/Logo2.svg";
 import UserNav from "./user-nav";

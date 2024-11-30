@@ -1,40 +1,33 @@
 "use server";
 
 import { APIServiceHandler } from "@/types/api";
-import { fetchWithAuth } from "@/utils/server-helpers";
+import { REST_URL } from "@/lib/constants";
+import { fetchWithAuth, processFetchResponse } from "@/lib/server-utils";
 
-const BASE_URL = process.env.NEXT_PUBLIC_REST_URL;
-
-export async function getProfile(): Promise<APIServiceHandler> {
-  const response = await fetchWithAuth(`${BASE_URL}/users/profile`, {
+export async function getProfile() {
+  const response = await fetchWithAuth(`${REST_URL}/users/profile`, {
     cache: "no-store",
   });
 
-  const data = await response.json();
-
-  if (!response.ok && data) return { data: null, error: data };
-  if (!response.ok)
-    throw new Error(
-      `HTTP error! Status: ${response.status}, ${response.statusText}`
-    );
-
-  return { data, error: null };
+  return processFetchResponse<UserProfile>(response);
 }
 
-export async function profileSetup(body: any): Promise<APIServiceHandler> {
-  const response = await fetchWithAuth(`${BASE_URL}/users/profile-setup`, {
+export async function profileSetup(body: any) {
+  const response = await fetchWithAuth(`${REST_URL}/users/profile/setup`, {
     cache: "no-store",
     method: "PUT",
     body: JSON.stringify(body),
   });
 
-  const data = await response.json();
+  return processFetchResponse(response);
+}
 
-  if (!response.ok && data) return { data: null, error: data };
-  if (!response.ok)
-    throw new Error(
-      `HTTP error! Status: ${response.status}, ${response.statusText}`
-    );
+export async function updateProfile(body: any) {
+  const response = await fetchWithAuth(`${REST_URL}/users/profile`, {
+    cache: "no-store",
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
 
-  return { data, error: null };
+  return processFetchResponse(response);
 }

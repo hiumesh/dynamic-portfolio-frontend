@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import ForgotPasswordUI from "./ui";
 
 export default async function ForgotPassword() {

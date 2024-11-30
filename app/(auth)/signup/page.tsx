@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 import SignUpUI from "./ui";
 import { redirect } from "next/navigation";

@@ -1,15 +1,14 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { showErrorToast } from "@/lib/client-utils";
 
 export default function LogoutButton() {
   const supabase = createClient();
-  const { toast } = useToast();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -17,11 +16,7 @@ export default function LogoutButton() {
     setLoading(true);
     const { error } = await supabase.auth.signOut();
     if (error) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong!",
-        description: error?.message || "There was a problem with your request.",
-      });
+      showErrorToast(error, "There was a problem with your request.");
     } else {
       router.refresh();
     }

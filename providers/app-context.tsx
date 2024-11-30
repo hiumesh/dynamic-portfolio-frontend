@@ -1,6 +1,6 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import {
   createContext,
   Dispatch,
@@ -12,7 +12,7 @@ import {
 } from "react";
 
 import { getProfile } from "@/services/api/users";
-import { useToast } from "@/hooks/use-toast";
+import { showErrorToast } from "@/lib/client-utils";
 
 type Context = {
   profile: undefined | null | UserProfile;
@@ -32,7 +32,6 @@ export default function AppContextProvider({
   children: React.ReactNode;
 }) {
   const supabase = createClient();
-  const { toast } = useToast();
   const [profile, setProfile] = useState<undefined | null | UserProfile>(
     undefined
   );
@@ -40,18 +39,9 @@ export default function AppContextProvider({
   const refreshProfile = useCallback(async () => {
     try {
       const profile = await getProfile();
-      if (profile.error) {
-        throw new Error(
-          profile.error?.message || "Failed to refresh the profile data."
-        );
-      }
-      setProfile(profile.data?.data);
+      setProfile(profile);
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong!",
-        description: error?.message || "Failed to refresh the profile data.",
-      });
+      showErrorToast(error, "Failed to refresh the profile data.");
     }
   }, []);
 
@@ -66,27 +56,11 @@ export default function AppContextProvider({
         }
 
         const profile = await getProfile();
-        if (profile.error) {
-          setProfile(null);
-          toast({
-            variant: "destructive",
-            title: "Something went wrong!",
-            description:
-              profile.error?.message ||
-              "There was a problem with your request.",
-          });
-          return;
-        }
 
-        setProfile(profile.data?.data);
+        setProfile(profile);
       } catch (error: any) {
         setProfile(null);
-        toast({
-          variant: "destructive",
-          title: "Something went wrong!",
-          description:
-            error?.message || "There was a problem with your request.",
-        });
+        showErrorToast(error, "There was a problem with your request.");
       }
     }
 

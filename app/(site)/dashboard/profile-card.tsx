@@ -1,11 +1,21 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useContext, useState } from "react";
+import ProfileFormModal from "./edit-profile-modal";
+import { useAppContext } from "@/providers/app-context";
 
 interface PropTypes {
   profile: UserProfile;
 }
 
 export default function ProfileCard({ profile }: PropTypes) {
+  const [form, setForm] = useState<{
+    isOpen: boolean;
+    editData: UserProfile | null;
+  }>({ isOpen: false, editData: null });
+
+  const { refreshProfile } = useAppContext();
+
   return (
     <div className="flex gap-5 items-center">
       <Avatar className="h-20 w-20 border-white border-4">
@@ -32,7 +42,15 @@ export default function ProfileCard({ profile }: PropTypes) {
           Pass out
         </p>
       </div>
-      <Button>Edit</Button>
+      <Button onClick={() => setForm({ isOpen: true, editData: profile })}>
+        Edit
+      </Button>
+      <ProfileFormModal
+        isOpen={form.isOpen}
+        editData={form.editData}
+        hide={() => setForm({ isOpen: false, editData: null })}
+        onSuccess={refreshProfile}
+      />
     </div>
   );
 }

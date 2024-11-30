@@ -1,6 +1,6 @@
 import LogoutButton from "@/components/logout";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 
 export default async function Home() {

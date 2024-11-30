@@ -79,3 +79,96 @@ export const workDomainOptions = [
   { label: "Volunteer", value: "Volunteer" },
   { label: "Wordpress Developer", value: "Wordpress Developer" },
 ];
+
+export const degreeOptions = [
+  { label: "B. Voc", value: "B. Voc" },
+  { label: "B.A.", value: "B.A." },
+  { label: "B.Arch", value: "B.Arch" },
+  { label: "B.B.A.", value: "B.B.A." },
+  { label: "B.C.A.", value: "B.C.A." },
+  { label: "B.Com.", value: "B.Com." },
+  { label: "B.E.", value: "B.E." },
+  { label: "B.F.Tech.", value: "B.F.Tech." },
+  { label: "B.Pharm.", value: "B.Pharm." },
+  { label: "B.S.", value: "B.S." },
+  { label: "B.Sc.", value: "B.Sc." },
+  { label: "B.Tech", value: "B.Tech" },
+  { label: "B.Tech + M.Tech", value: "B.Tech + M.Tech" },
+  {
+    label: "Bachelor of Fine Arts (BFA)",
+    value: "Bachelor of Fine Arts (BFA)",
+  },
+  { label: "Diploma", value: "Diploma" },
+  { label: "M. Voc", value: "M. Voc" },
+  { label: "M.Arch", value: "M.Arch" },
+  { label: "M.B.A.", value: "M.B.A." },
+  { label: "M.C.A.", value: "M.C.A." },
+  { label: "M.Com.", value: "M.Com." },
+  { label: "M.Des.", value: "M.Des." },
+  { label: "M.E.", value: "M.E." },
+  { label: "M.Ed.", value: "M.Ed." },
+  { label: "M.F.Tech.", value: "M.F.Tech." },
+  { label: "M.S.", value: "M.S." },
+  { label: "M.Sc.", value: "M.Sc." },
+  { label: "M.Tech", value: "M.Tech" },
+  { label: "PG Diploma", value: "PG Diploma" },
+];
+
+export const socialProfilesOptions = [
+  {
+    label: "Github",
+    value: "Github",
+  },
+  {
+    label: "LinkedIn",
+    value: "LinkedIn",
+  },
+  {
+    label: "Hacker Rank",
+    value: "Hacker Rank",
+  },
+  {
+    label: "GeeksforGeeks",
+    value: "GeeksforGeeks",
+  },
+  {
+    label: "CodeChef",
+    value: "CodeChef",
+  },
+  {
+    label: "LeetCode",
+    value: "LeetCode",
+  },
+  {
+    label: "Codeforces",
+    value: "Codeforces",
+  },
+  {
+    label: "Topcoder",
+    value: "Topcoder",
+  },
+  {
+    label: "Hackerearth",
+    value: "Hackerearth",
+  },
+  {
+    label: "Behance",
+    value: "Behance",
+  },
+  {
+    label: "Blog",
+    value: "Blog",
+  },
+  {
+    label: "Portfolio Website",
+    value: "Portfolio Website",
+  },
+  {
+    label: "Dribble",
+    value: "Dribble",
+  },
+  {
+    label: "Other Profile Link",
+    value: "Other Profile Link",
+  },
+];
