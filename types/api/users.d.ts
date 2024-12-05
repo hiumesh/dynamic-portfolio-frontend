@@ -32,6 +32,23 @@ interface UserEducation {
 
 type UserEducations = UserEducation[];
 
+interface UserWorkExperience {
+  id: number;
+  order_index: number;
+  company_name: string;
+  company_url: string;
+  job_type: "FULL_TIME" | "PART_TIME" | "SEMI_FULL_TIME" | "INTERN";
+  job_title: string;
+  location: string;
+  start_date: string;
+  end_date?: string;
+  description: string[];
+  skills_used: string[];
+  certificate_link?: string;
+}
+
+type UserWorkExperiences = UserWorkExperience[];
+
 interface PostPresignedUrl {
   file_name: string;
   key: string;

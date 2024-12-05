@@ -281,3 +281,142 @@ export const profileFormSchema = z
       .optional(),
   })
   .strict();
+
+export const workExperienceFormSchema = z
+  .object({
+    company_name: z
+      .string()
+      .trim()
+      .min(6, { message: "Company name must be at least 6 characters long" })
+      .max(50, { message: "Company name must be at most 50 characters long" })
+      .regex(alphaNumericRegex, {
+        message:
+          "Company name must only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
+      }),
+    company_url: z
+      .string()
+      .trim()
+      .refine(
+        (value) => value === "" || z.string().url().safeParse(value).success,
+        {
+          message: "Company URL must be a valid URL",
+        }
+      )
+      .transform((url) => (url === "" ? undefined : url))
+      .optional(),
+    job_type: z.enum(["FULL_TIME", "PART_TIME", "SEMI_FULL_TIME", "INTERN"], {
+      message:
+        "Work type must be either 'Full Time', 'Part Time' or 'Semi-full Time'",
+    }),
+    job_title: z
+      .string()
+      .trim()
+      .min(6, { message: "Job title must be at least 6 characters long" })
+      .max(50, { message: "Job title must be at most 50 characters long" })
+      .regex(alphaNumericRegex, {
+        message:
+          "Job title must only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
+      }),
+    location: z.string().trim().min(5, { message: "Location is required" }),
+    start_date: z
+      .string()
+      .trim()
+      .refine((value) => !isNaN(Date.parse(value)), {
+        message: "Start date must be a valid ISO date",
+      })
+      .refine(
+        (value) => {
+          const date = new Date(value);
+          const currentYear = new Date().getFullYear();
+          return (
+            date.getFullYear() >= 1900 && date.getFullYear() <= currentYear + 6
+          );
+        },
+        {
+          message: `Start date must be between the year 1900 and ${
+            new Date().getFullYear() + 6
+          }`,
+        }
+      ),
+    end_date: z
+      .string()
+      .trim()
+      .refine(
+        (value) => !value || !isNaN(Date.parse(value)), // Allow empty value (optional field)
+        {
+          message: "End date must be a valid ISO date",
+        }
+      )
+      .refine(
+        (value) => {
+          if (!value) return true; // Skip further checks if the value is empty
+          const date = new Date(value);
+          const currentYear = new Date().getFullYear();
+          return (
+            date.getFullYear() >= 1900 && date.getFullYear() <= currentYear + 6
+          );
+        },
+        {
+          message: `End date must be between the year 1900 and ${
+            new Date().getFullYear() + 6
+          }`,
+        }
+      )
+      .optional(),
+    currently_working: z.boolean().optional(),
+    description: z
+      .array(
+        z.object({
+          item: z.string().optional(),
+        })
+      )
+      .transform((array) =>
+        array.filter(({ item }) => item && item.trim() !== "")
+      )
+      .refine((filteredArray) => filteredArray.length >= 3, {
+        message: "The description must have at least 3 valid lines.",
+      })
+      .superRefine((array, ctx) => {
+        array.forEach(({ item }, index) => {
+          if (item) {
+            const validation = z
+              .string()
+              .trim()
+              .min(5, { message: "Item must be at least 5 characters long" })
+              .max(100, { message: "Item must be at most 100 characters long" })
+              .safeParse(item);
+            if (!validation.success) {
+              ctx.addIssue({
+                path: [index, "item"],
+                code: z.ZodIssueCode.custom,
+                message: validation.error.issues[0].message,
+              });
+            }
+          }
+        });
+      }),
+    skills_used: z
+      .array(z.string().trim().min(1, { message: "Skill is required" }))
+      .min(3, { message: "At least three skills is required" }),
+    certificate_link: z
+      .string()
+      .trim()
+      .refine(
+        (value) => value === "" || z.string().url().safeParse(value).success,
+        {
+          message: "Certificate link must be a valid URL",
+        }
+      )
+      .transform((url) => (url === "" ? undefined : url))
+      .optional(),
+  })
+  .strict()
+  .superRefine((data, ctx) => {
+    if (!data.end_date && !data.currently_working) {
+      ctx.addIssue({
+        path: ["end_date"],
+        code: z.ZodIssueCode.custom,
+        message: "End date is required",
+      });
+    }
+  });

@@ -172,3 +172,9 @@ export const socialProfilesOptions = [
     value: "Other Profile Link",
   },
 ];
+
+export const jobTypeOptions = [
+  { label: "Full Time", value: "FULL_TIME" },
+  { label: "Part Time", value: "PART_TIME" },
+  { label: "Internship", value: "SEMI_PART_TIME" },
+];
