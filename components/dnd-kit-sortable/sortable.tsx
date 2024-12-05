@@ -33,7 +33,7 @@ import {
   NewIndexGetter,
 } from "@dnd-kit/sortable";
 
-import { createRange } from "@/utils/helpers";
+// import { createRange } from "@/utils/helpers";
 import { Item } from "./item";
 import { List } from "./list";
 import { Wrapper } from "./wrapper";

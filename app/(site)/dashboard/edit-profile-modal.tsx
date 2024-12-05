@@ -83,8 +83,6 @@ export default function ProfileFormModal({
   const selectedSocialProfiles =
     form.watch("social_profiles")?.map((item) => item.platform) || [];
 
-  console.log(form.watch("social_profiles"));
-
   let workDomainList = useAsyncList<(typeof workDomainOptions)[0]>({
     async load({ signal, filterText }) {
       let items: typeof workDomainOptions;

@@ -39,7 +39,7 @@ export async function deleteUserEducation(id: number | string) {
   return processFetchResponse(response);
 }
 
-export default async function reorderUserEducations(
+export async function reorderUserEducations(
   id: number | string,
   newIndex: number
 ) {

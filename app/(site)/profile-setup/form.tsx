@@ -9,7 +9,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
 import { workDomainOptions } from "@/lib/select-options";
 import { useAppContext } from "@/providers/app-context";
 import { profileSetup } from "@/services/api/users";
@@ -20,6 +19,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { showErrorToast } from "@/lib/client-utils";
 
 const alphaRegex = /^[a-zA-Z\s]+$/; // Allows only letters and spaces
 const alphaNumericRegex = /^[a-zA-Z0-9\s\-,.]+$/; // Allows letters, numbers, spaces, hyphens, commas, and periods
@@ -73,7 +73,6 @@ const formSchema = z
 export default function ProfileSetupForm() {
   const [loading, setLoading] = useState(false);
   const { refreshProfile } = useAppContext();
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
@@ -96,11 +95,7 @@ export default function ProfileSetupForm() {
       // setLoading(false);
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Something went wrong!",
-        description: error?.message || "There was a problem with your request.",
-      });
+      showErrorToast(error);
     }
   };
 

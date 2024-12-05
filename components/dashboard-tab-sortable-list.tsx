@@ -5,12 +5,16 @@ import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { DraggableSyntheticListeners } from "@dnd-kit/core";
 
+export interface SortableListItem {
+  id: number;
+}
+
 interface PropTypes {
-  list: UserEducations;
-  setList: React.Dispatch<React.SetStateAction<UserEducations>>;
+  list: SortableListItem[];
+  setList: React.Dispatch<React.SetStateAction<SortableListItem[]>>;
   onRemove: (id: number | string) => Promise<boolean>;
   onReorder: (id: number | string, newIndex: number) => Promise<boolean>;
-  onEdit: (data: UserEducation) => void;
+  onEdit: (data: SortableListItem) => void;
   Card: React.ComponentType<{
     data: any;
     onEdit?: (data: any) => void;
@@ -31,7 +35,7 @@ export default function DashboardTabSortableList({
     return list.reduce((acc, education) => {
       acc[education.id] = education;
       return acc;
-    }, {} as Record<string, UserEducation>);
+    }, {} as Record<string, SortableListItem>);
   }, [list]);
 
   const renderItem: ItemProps["renderItem"] = ({

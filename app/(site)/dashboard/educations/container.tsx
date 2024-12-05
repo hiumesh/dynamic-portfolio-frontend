@@ -4,10 +4,13 @@ import AvatarHeaderWithAction from "@/components/avatar-header-with-action";
 import { useCallback, useState } from "react";
 import EducationFormModal from "./form-modal";
 import { showErrorToast } from "@/lib/client-utils";
-import reorderUserEducations, {
+import {
+  reorderUserEducations,
   deleteUserEducation,
 } from "@/services/api/user-educations";
-import DashboardTabSortableList from "@/components/dashboard-tab-sortable-list";
+import DashboardTabSortableList, {
+  SortableListItem,
+} from "@/components/dashboard-tab-sortable-list";
 import EducationCard from "./card";
 
 interface PropTypes {
@@ -23,7 +26,11 @@ export default function EducationContainer({ educations }: PropTypes) {
 
   const onRemove = useCallback(async (id: number | string) => {
     try {
-      await deleteUserEducation(id);
+      const { error } = await deleteUserEducation(id);
+      if (error) {
+        showErrorToast(error);
+        return false;
+      }
       setData((prev) => prev.filter((edu) => edu.id !== id));
       return true;
     } catch (error) {
@@ -35,7 +42,11 @@ export default function EducationContainer({ educations }: PropTypes) {
   const onReorder = useCallback(
     async (id: number | string, newIndex: number) => {
       try {
-        await reorderUserEducations(id, newIndex);
+        const { error } = await reorderUserEducations(id, newIndex);
+        if (error) {
+          showErrorToast(error);
+          return false;
+        }
         return true;
       } catch (error) {
         showErrorToast(error);
@@ -68,10 +79,12 @@ export default function EducationContainer({ educations }: PropTypes) {
       />
       <DashboardTabSortableList
         list={data}
-        setList={setData}
+        setList={
+          setData as React.Dispatch<React.SetStateAction<SortableListItem[]>>
+        }
         onRemove={onRemove}
         onReorder={onReorder}
-        onEdit={onEdit}
+        onEdit={onEdit as (data: SortableListItem) => void}
         Card={EducationCard}
       />
       <EducationFormModal

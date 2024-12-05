@@ -1,7 +1,6 @@
 "use server";
 
 import { createClient } from "./supabase/server";
-import { APIError, ValidationError } from "./errors";
 
 export async function fetchWithAuth(
   url: string | URL | globalThis.Request,
@@ -24,23 +23,35 @@ export async function fetchWithAuth(
 
 export async function processFetchResponse<T = any>(
   response: Response
-): Promise<T> {
+): Promise<ServerActionResponse<T>> {
   let data = null;
   const contentType = response.headers.get("Content-Type");
   if (contentType && contentType.includes("application/json")) {
     data = await response.json();
   }
-  if (response.ok) return data;
+  if (response.ok)
+    return {
+      data,
+    };
   else if (!response.ok && data) {
-    if (data["error_code"] == "validation_failed")
-      throw new ValidationError(
-        data?.message || "Server Error, Try Again Later",
-        data?.error
-      );
-    throw new APIError(data?.message || "Server Error, Try Again Later");
+    if (data["error_code"] == "validation_failed") {
+      return {
+        error: {
+          message: data?.message || "Server Error, Try Again Later",
+          data: data?.error,
+        },
+      };
+    }
+    return {
+      error: {
+        message: data?.message || "Server Error, Try Again Later",
+      },
+    };
   } else {
-    throw new Error(
-      `HTTP error! Status: ${response.status}, ${response.statusText}`
-    );
+    return {
+      error: {
+        message: `HTTP error! Status: ${response.status}, ${response.statusText}`,
+      },
+    };
   }
 }

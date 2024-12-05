@@ -38,7 +38,13 @@ export default function AppContextProvider({
 
   const refreshProfile = useCallback(async () => {
     try {
-      const profile = await getProfile();
+      const { data: profile, error } = await getProfile();
+
+      if (error) {
+        showErrorToast(error, "Failed to refresh the profile data.");
+        return;
+      }
+
       setProfile(profile);
     } catch (error: any) {
       showErrorToast(error, "Failed to refresh the profile data.");
@@ -55,9 +61,12 @@ export default function AppContextProvider({
           return;
         }
 
-        const profile = await getProfile();
+        const { data: profile, error } = await getProfile();
 
-        setProfile(profile);
+        if (error) {
+          setProfile(null);
+          showErrorToast(error, "There was a problem with your request.");
+        } else setProfile(profile);
       } catch (error: any) {
         setProfile(null);
         showErrorToast(error, "There was a problem with your request.");

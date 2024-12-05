@@ -58,10 +58,18 @@ export default function EducationFormModal({
       if (editData) response = await updateUserEducation(editData.id, data);
       else response = await createUserEducation(data);
 
-      onSuccess?.(response);
-      hide();
-
       setLoading(false);
+      if (response.error) {
+        form.setError("root", { message: response.error.message });
+        showErrorToast(
+          response.error,
+          "There was a problem with your request."
+        );
+      } else {
+        onSuccess?.(response.data);
+        form.reset();
+        hide();
+      }
     } catch (error: any) {
       setLoading(false);
       showErrorToast(error, "There was a problem with your request.");
