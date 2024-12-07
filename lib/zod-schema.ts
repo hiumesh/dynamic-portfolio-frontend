@@ -420,3 +420,84 @@ export const workExperienceFormSchema = z
       });
     }
   });
+
+export const certificateFormSchema = z
+  .object({
+    title: z
+      .string()
+      .trim()
+      .min(6, { message: "Title must be at least 6 characters long" })
+      .max(50, { message: "Title must be at most 50 characters long" })
+      .regex(alphaNumericRegex, {
+        message:
+          "Title must only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
+      }),
+
+    description: z
+      .array(
+        z.object({
+          item: z.string().optional(),
+        })
+      )
+      .transform((array) =>
+        array.filter(({ item }) => item && item.trim() !== "")
+      )
+      .refine((filteredArray) => filteredArray.length >= 1, {
+        message: "The description must have at least 1 valid lines.",
+      })
+      .superRefine((array, ctx) => {
+        array.forEach(({ item }, index) => {
+          if (item) {
+            const validation = z
+              .string()
+              .trim()
+              .min(5, { message: "Item must be at least 5 characters long" })
+              .max(100, { message: "Item must be at most 100 characters long" })
+              .safeParse(item);
+            if (!validation.success) {
+              ctx.addIssue({
+                path: [index, "item"],
+                code: z.ZodIssueCode.custom,
+                message: validation.error.issues[0].message,
+              });
+            }
+          }
+        });
+      }),
+
+    completion_date: z
+      .string()
+      .trim()
+      .refine((value) => !isNaN(Date.parse(value)), {
+        message: "Start date must be a valid ISO date",
+      })
+      .refine(
+        (value) => {
+          const date = new Date(value);
+          const currentYear = new Date().getFullYear();
+          return (
+            date.getFullYear() >= 1900 && date.getFullYear() <= currentYear + 6
+          );
+        },
+        {
+          message: `Start date must be between the year 1900 and ${
+            new Date().getFullYear() + 6
+          }`,
+        }
+      ),
+    skills_used: z
+      .array(z.string().trim().min(1, { message: "Skill is required" }))
+      .min(3, { message: "At least three skills is required" }),
+    certificate_link: z
+      .string()
+      .trim()
+      .refine(
+        (value) => value === "" || z.string().url().safeParse(value).success,
+        {
+          message: "Certificate link must be a valid URL",
+        }
+      )
+      .transform((url) => (url === "" ? undefined : url))
+      .optional(),
+  })
+  .strict();

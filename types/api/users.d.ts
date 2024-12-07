@@ -49,6 +49,18 @@ interface UserWorkExperience {
 
 type UserWorkExperiences = UserWorkExperience[];
 
+interface UserCertification {
+  id: number;
+  order_index: number;
+  title: string;
+  description: string[];
+  completion_date: string;
+  certificate_link?: string;
+  skills_used: string[];
+}
+
+type UserCertifications = UserCertification[];
+
 interface PostPresignedUrl {
   file_name: string;
   key: string;
