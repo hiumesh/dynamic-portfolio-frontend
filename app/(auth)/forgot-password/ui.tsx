@@ -19,7 +19,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { showErrorToast } from "@/lib/client-utils";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -36,7 +37,6 @@ let formSchema = z
 
 export default function ForgotPasswordUI() {
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -56,11 +56,7 @@ export default function ForgotPasswordUI() {
       }
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Something went wrong!",
-        description: error?.message || "There was a problem with your request.",
-      });
+      showErrorToast(error);
     }
   };
   return (

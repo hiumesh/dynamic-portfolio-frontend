@@ -7,7 +7,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 
-import { useToast } from "@/hooks/use-toast";
 import {
   handleGoogleSignIn,
   initUpdatePassword,
@@ -31,6 +30,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { showErrorToast } from "@/lib/client-utils";
 
 let formSchema = z
   .object({
@@ -41,7 +41,6 @@ let formSchema = z
 
 export default function SignInUI() {
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: { email: "", password: "" },
@@ -54,11 +53,7 @@ export default function SignInUI() {
       await signIn(data);
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Something went wrong!",
-        description: error?.message || "There was a problem with your request.",
-      });
+      showErrorToast(error);
     }
   };
 

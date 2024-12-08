@@ -7,7 +7,9 @@ import { createClient } from "@/lib/supabase/server";
 import { User } from "@supabase/supabase-js";
 import { headers } from "next/headers";
 
-export async function signIn(formData: any) {
+export async function signIn(
+  formData: any
+): Promise<ServerActionResponse<undefined>> {
   const supabase = createClient();
 
   const data = {
@@ -19,14 +21,17 @@ export async function signIn(formData: any) {
 
   if (error) {
     // redirect("/error");
-    throw new Error(error.message);
+    // throw new Error(error.message);
+    return { error };
   }
 
   revalidatePath("/", "layout");
   redirect("/");
 }
 
-export async function initUpdatePassword(email: string) {
+export async function initUpdatePassword(
+  email: string
+): Promise<ServerActionResponse<any>> {
   const supabase = createClient();
   // const origin = headers().get("origin");
   // for code exchange at callback
@@ -36,11 +41,13 @@ export async function initUpdatePassword(email: string) {
 
   const { data, error } = await supabase.auth.resetPasswordForEmail(email);
 
-  if (error) throw error;
-  return data;
+  if (error) return { error };
+  return { data };
 }
 
-export async function signUp(formData: any): Promise<User> {
+export async function signUp(
+  formData: any
+): Promise<ServerActionResponse<User>> {
   const supabase = createClient();
   // const origin = headers().get("origin");
   const body = {
@@ -60,13 +67,16 @@ export async function signUp(formData: any): Promise<User> {
 
   if (error) {
     // redirect("/error");
-    throw new Error(error.message);
+    // throw new Error(error.message);
+    return { error };
   }
 
-  return data.user as User;
+  return { data: data.user as User };
 }
 
-export async function handleGoogleSignIn() {
+export async function handleGoogleSignIn(): Promise<
+  ServerActionResponse<undefined>
+> {
   const supabase = createClient();
   const origin = headers().get("origin");
 
@@ -77,31 +87,38 @@ export async function handleGoogleSignIn() {
     },
   });
 
-  if (error) throw error;
+  if (error) return { error };
 
   if (data.url) {
     redirect(data.url); // use the redirect API for your server framework
   }
+  return {};
 }
 
-export async function updatePassword(password: string) {
+export async function updatePassword(
+  password: string
+): Promise<ServerActionResponse<User>> {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.updateUser({
     password: password,
   });
 
-  if (error) throw error;
+  if (error) return { error };
 
-  return data;
+  return { data: data.user as User };
 }
 
-export async function exchangeCodeForSession(code: string) {
+export async function exchangeCodeForSession(
+  code: string
+): Promise<ServerActionResponse<undefined>> {
   const supabase = createClient();
 
   const { error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
-    throw error;
+    return { error };
   }
+
+  return {};
 }

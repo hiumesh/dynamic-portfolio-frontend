@@ -25,8 +25,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { handleGoogleSignIn, signUp } from "@/actions/supabase_auth";
-import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { showErrorToast } from "@/lib/client-utils";
 
 const formSchema = z
   .object({
@@ -44,7 +44,6 @@ export default function SignInUI() {
   const [emailVerification, setEmailVerification] = useState<
     undefined | string
   >(undefined);
-  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: { email: "", password: "", cpassword: "" },
     resolver: zodResolver(formSchema),
@@ -53,15 +52,16 @@ export default function SignInUI() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       setLoading(true);
-      const user = await signUp(data);
-      setEmailVerification(user.email);
+      const { data: user, error } = await signUp(data);
+      if (error) {
+        setLoading(false);
+        showErrorToast(error);
+        return;
+      }
+      setEmailVerification(user?.email);
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Something went wrong!",
-        description: error?.message || "There was a problem with your request.",
-      });
+      showErrorToast(error);
     }
   };
 

@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -29,6 +28,7 @@ import {
   updatePassword,
 } from "@/actions/supabase_auth";
 import { useRouter, useSearchParams } from "next/navigation";
+import { showErrorToast } from "@/lib/client-utils";
 
 const formSchema = z
   .object({
@@ -44,7 +44,6 @@ export default function UpdatePassword() {
   const [loading, setLoading] = useState(false);
   // const searchParams = useSearchParams();
   const router = useRouter();
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: { password: "", cpassword: "" },
@@ -58,11 +57,7 @@ export default function UpdatePassword() {
       router.replace("signin");
     } catch (error: any) {
       setLoading(false);
-      toast({
-        variant: "destructive",
-        title: "Something went wrong!",
-        description: error?.message || "There was a problem with your request.",
-      });
+      showErrorToast(error);
     }
   };
 
