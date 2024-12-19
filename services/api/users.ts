@@ -31,3 +31,12 @@ export async function updateProfile(body: any) {
 
   return processFetchResponse(response);
 }
+
+export async function updateUserSkills(body: any) {
+  const response = await fetchWithAuth(`${REST_URL}/users/profile/skills`, {
+    cache: "no-store",
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+  return processFetchResponse(response);
+}

@@ -1,23 +1,33 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useContext, useState } from "react";
 import ProfileFormModal from "./edit-profile-modal";
 import { useAppContext } from "@/providers/app-context";
+import { cn } from "@/lib/utils";
 
 interface PropTypes {
-  profile: UserProfile;
+  className?: string;
 }
 
-export default function ProfileCard({ profile }: PropTypes) {
+export default function ProfileCard({ className }: PropTypes) {
   const [form, setForm] = useState<{
     isOpen: boolean;
     editData: UserProfile | null;
   }>({ isOpen: false, editData: null });
 
-  const { refreshProfile } = useAppContext();
+  const { profile, refreshProfile } = useAppContext();
+
+  if (!profile) return <div>Profile Not found!</div>;
 
   return (
-    <div className="flex gap-5 items-center">
+    <div
+      className={cn(
+        "flex gap-5 items-center bg-secondary p-4 rounded-lg",
+        className
+      )}
+    >
       <Avatar className="h-20 w-20 border-white border-4">
         <AvatarImage
           src={profile.avatar_url ? profile.avatar_url : undefined}

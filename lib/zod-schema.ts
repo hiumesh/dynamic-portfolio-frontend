@@ -501,3 +501,11 @@ export const certificateFormSchema = z
       .optional(),
   })
   .strict();
+
+export const skillsFormSchema = z
+  .object({
+    skills: z
+      .array(z.string().trim().min(1, { message: "Skill is required" }))
+      .min(3, { message: "At least three skills is required" }),
+  })
+  .strict();

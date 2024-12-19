@@ -39,16 +39,16 @@ const tabs = [
   },
 ];
 
-export default function TabContainer() {
+export default function TabContainer({ className }: { className?: string }) {
   const { profile } = useAppContext();
   const pathname = usePathname();
 
   if (!profile) throw new Error("Profile not found!");
 
   return (
-    <div>
+    <div className={className}>
       <div className="bg-secondary px-5 pt-3 rounded-md my-3 space-y-5">
-        <ProfileCard profile={profile} />
+        <ProfileCard />
         <div className="flex gap-8 overflow-auto">
           {tabs.map((tab) => (
             <Link

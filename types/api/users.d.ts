@@ -10,6 +10,7 @@ interface UserProfile {
     graduation_year?: string;
     work_domains?: string[];
     social_profiles?: { platform: string; url: string }[];
+    skills: string[];
   };
   created_at: string;
 }
