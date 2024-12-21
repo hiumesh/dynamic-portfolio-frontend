@@ -11,6 +11,10 @@ interface UserProfile {
     work_domains?: string[];
     social_profiles?: { platform: string; url: string }[];
     skills: string[];
+    hackathon_metadata?: {
+      heading?: string;
+      description?: string;
+    };
   };
   created_at: string;
 }

@@ -619,3 +619,20 @@ export const hackathonFormSchema = z
       .optional(),
   })
   .strict();
+
+export const hackathonMetadataFormSchema = z
+  .object({
+    heading: z
+      .string()
+      .trim()
+      .min(3, { message: "Heading is required" })
+      .max(100)
+      .optional(),
+    description: z
+      .string()
+      .trim()
+      .min(3, { message: "Description is required" })
+      .max(1000)
+      .optional(),
+  })
+  .strict();

@@ -54,3 +54,16 @@ export async function reorderUserHackathons(
 
   return processFetchResponse(response);
 }
+
+export async function updateHackathonMetadata(data: any) {
+  const response = await fetchWithAuth(
+    `${REST_URL}/users/hackathons/metadata`,
+    {
+      cache: "no-store",
+      method: "PUT",
+      body: JSON.stringify(data),
+    }
+  );
+
+  return processFetchResponse(response);
+}

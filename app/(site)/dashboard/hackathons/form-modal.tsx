@@ -38,13 +38,6 @@ export default function HackathonFormModal({
 
   const form = useForm<z.infer<typeof hackathonFormSchema>>({
     defaultValues: {
-      // title: "",
-      // location: "",
-      // end_date: "",
-      // start_date: "",
-      // certificate_link: "",
-      // description: "",
-      // avatar: undefined,
       links: [
         {
           platform: "Website",
