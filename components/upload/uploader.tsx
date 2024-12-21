@@ -240,7 +240,7 @@ export const FileUploader = forwardRef<
             ];
           });
 
-          const presignedUrls = await getPostPresignedUrl({
+          const { error, data: presignedUrls } = await getPostPresignedUrl({
             files: files.map((file) => ({
               file_name: file.name,
               file_size: file.size,
@@ -248,25 +248,31 @@ export const FileUploader = forwardRef<
             })),
           });
 
-          const uploadPromises = presignedUrls.map(async (f, idx) => {
-            const controller = new AbortController();
-            await uploadFileToPresignedUrl(
-              files[idx],
-              f,
-              (event) =>
-                onUploadProgress(
-                  event,
-                  {
-                    file_name: f.file_name,
-                    key: f.key,
-                    url: new URL(f.key, BUCKET_URL).href,
-                    file: files[idx],
-                  },
-                  controller
-                ),
-              controller
-            );
-          });
+          if (error) {
+            showErrorToast(error);
+            return;
+          }
+
+          const uploadPromises =
+            presignedUrls?.map(async (f, idx) => {
+              const controller = new AbortController();
+              await uploadFileToPresignedUrl(
+                files[idx],
+                f,
+                (event) =>
+                  onUploadProgress(
+                    event,
+                    {
+                      file_name: f.file_name,
+                      key: f.key,
+                      url: new URL(f.key, BUCKET_URL).href,
+                      file: files[idx],
+                    },
+                    controller
+                  ),
+                controller
+              );
+            }) ?? [];
 
           await Promise.all(uploadPromises);
         } catch (error) {

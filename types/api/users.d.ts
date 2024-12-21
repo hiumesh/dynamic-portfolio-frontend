@@ -78,3 +78,24 @@ interface FileObject {
 }
 
 type FileObjects = FileObject[];
+
+interface UserHackathon {
+  id: number;
+  order_index: number;
+  title: string;
+  avatar: string;
+  location: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  certificate_link?: string;
+  attributes: null | {
+    links: {
+      platform: string;
+      label: string;
+      url: string;
+    }[];
+  };
+}
+
+type UserHackathons = UserHackathon[];

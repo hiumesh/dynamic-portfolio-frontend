@@ -178,3 +178,9 @@ export const jobTypeOptions = [
   { label: "Part Time", value: "PART_TIME" },
   { label: "Internship", value: "SEMI_PART_TIME" },
 ];
+
+export const linksOptions = [
+  { label: "Social Media", value: "Social" },
+  { label: "Github", value: "Github" },
+  { label: "Website", value: "Website" },
+];

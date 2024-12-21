@@ -509,3 +509,113 @@ export const skillsFormSchema = z
       .min(3, { message: "At least three skills is required" }),
   })
   .strict();
+
+export const hackathonFormSchema = z
+  .object({
+    title: z
+      .string()
+      .trim()
+      .min(6, { message: "Company name must be at least 6 characters long" })
+      .max(50, { message: "Company name must be at most 50 characters long" })
+      .regex(alphaNumericRegex, {
+        message:
+          "Company name must only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
+      }),
+    avatar: z
+      .object({
+        file_name: z.string(),
+        key: z.string(),
+        url: z.string().trim().url({
+          message: "Avatar must be a valid URL",
+        }),
+      })
+      .optional(),
+    location: z.string().trim().min(5, { message: "Location is required" }),
+    start_date: z
+      .string()
+      .trim()
+      .refine((value) => !isNaN(Date.parse(value)), {
+        message: "Start date must be a valid ISO date",
+      })
+      .refine(
+        (value) => {
+          const date = new Date(value);
+          const currentYear = new Date().getFullYear();
+          return (
+            date.getFullYear() >= 1900 && date.getFullYear() <= currentYear + 6
+          );
+        },
+        {
+          message: `Start date must be between the year 1900 and ${
+            new Date().getFullYear() + 6
+          }`,
+        }
+      ),
+    end_date: z
+      .string()
+      .trim()
+      .refine((value) => !isNaN(Date.parse(value)), {
+        message: "End date must be a valid ISO date",
+      })
+      .refine(
+        (value) => {
+          const date = new Date(value);
+          const currentYear = new Date().getFullYear();
+          return (
+            date.getFullYear() >= 1900 && date.getFullYear() <= currentYear + 6
+          );
+        },
+        {
+          message: `End date must be between the year 1900 and ${
+            new Date().getFullYear() + 6
+          }`,
+        }
+      ),
+    description: z
+      .string()
+      .trim()
+      .min(10, { message: "Description is required" }),
+    certificate_link: z
+      .string()
+      .trim()
+      .refine(
+        (value) => value === "" || z.string().url().safeParse(value).success,
+        {
+          message: "Certificate link must be a valid URL",
+        }
+      )
+      .transform((url) => (url === "" ? undefined : url))
+      .optional(),
+    links: z
+      .array(
+        z.object({
+          platform: z.string().optional(),
+          label: z
+            .string()
+            .optional()
+            .refine(
+              (value) =>
+                !value ||
+                z
+                  .string()
+                  .min(1, { message: "Label is required" })
+                  .safeParse(value).success,
+              {
+                message: "Label is required",
+              }
+            ),
+          url: z
+            .string()
+            .trim()
+            .optional()
+            .refine(
+              (value) => !value || z.string().url().safeParse(value).success,
+              {
+                message: "URL must be a valid URL",
+              }
+            ),
+        })
+      )
+      .optional(),
+  })
+  .strict();

@@ -30,8 +30,6 @@ export default function DashboardLayout({
 }>) {
   const pathname = usePathname();
 
-  console.log(pathname.split("/").pop());
-
   const secondaryRoute =
     pathname.split("/").pop()! in pathnameToLabel
       ? pathnameToLabel[pathname.split("/").pop()!]

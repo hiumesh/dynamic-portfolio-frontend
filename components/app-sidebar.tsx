@@ -64,6 +64,10 @@ const data = {
           title: "Certifications",
           url: "/dashboard/certifications",
         },
+        {
+          title: "Hackathons",
+          url: "/dashboard/hackathons",
+        },
       ],
     },
     {
