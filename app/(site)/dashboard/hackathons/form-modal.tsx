@@ -94,7 +94,6 @@ export default function HackathonFormModal({
 
   useEffect(() => {
     if (editData) {
-      console.log(editData);
       form.reset();
       form.setValue("title", editData.title);
       form.setValue("avatar", setAvatar(editData.avatar));
@@ -114,7 +113,6 @@ export default function HackathonFormModal({
         description: undefined,
         avatar: undefined,
       });
-      console.log("running");
     }
   }, [editData, form]);
 

@@ -1,42 +1,39 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import ExperienceFormModal from "./form-modal";
 import { showErrorToast } from "@/lib/client-utils";
 import DashboardTabSortableList, {
   SortableListItem,
 } from "@/components/dashboard-tab-sortable-list";
-import ExperienceCard from "./card";
-import {
-  deleteUserWorkExperience,
-  reorderUserWorkExperiences,
-} from "@/services/api/user_experience";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit3, Plus } from "lucide-react";
 import { MetaDataFormModal } from "./metadata-form-modal";
+import TechProjectCard from "./tech-project-card";
+import TechProjectFormModal from "./tech-project-form";
+import { remove, reorder } from "@/services/api/work-gallery";
 
 interface PropTypes {
-  experiences: UserWorkExperiences;
+  items: WorkGalleryItems;
 }
 
-export default function ExperienceContainer({ experiences }: PropTypes) {
+export default function WorkGalleryContainer({ items }: PropTypes) {
   const [form, setForm] = useState<{
     isOpen: boolean;
-    editData: UserWorkExperience | null;
+    editData: WorkGalleryItem | null;
   }>({ isOpen: false, editData: null });
   const [metadataFormModal, setMetadataFormModal] = useState(false);
-  const [data, setData] = useState(experiences);
+  const [data, setData] = useState(items);
 
   const onRemove = useCallback(async (id: number | string) => {
     try {
-      const { error } = await deleteUserWorkExperience(id);
+      const { error } = await remove(id);
       if (error) {
         showErrorToast(error);
         return false;
       }
-      setData((prev) => prev.filter((edu) => edu.id !== id));
+      setData((prev) => prev.filter((ha) => ha.id !== id));
       return true;
     } catch (error) {
       showErrorToast(error);
@@ -47,7 +44,7 @@ export default function ExperienceContainer({ experiences }: PropTypes) {
   const onReorder = useCallback(
     async (id: number | string, newIndex: number) => {
       try {
-        const { error } = await reorderUserWorkExperiences(id, newIndex);
+        const { error } = await reorder(id, newIndex);
         if (error) {
           showErrorToast(error);
           return false;
@@ -61,14 +58,13 @@ export default function ExperienceContainer({ experiences }: PropTypes) {
     []
   );
 
-  const onEdit = useCallback((data: UserWorkExperience) => {
+  const onEdit = useCallback((data: WorkGalleryItem) => {
     setForm({ isOpen: true, editData: data });
   }, []);
 
-  const onSuccess = useCallback((data?: UserWorkExperience) => {
+  const onSuccess = useCallback((data?: WorkGalleryItem) => {
     if (data) {
       setData((prev) => {
-        console.log("data", data);
         const index = prev.findIndex((exp) => exp.id === data.id);
         if (index === -1) return [data, ...prev];
         return [...prev.slice(0, index), data, ...prev.slice(index + 1)];
@@ -82,7 +78,7 @@ export default function ExperienceContainer({ experiences }: PropTypes) {
         <div className="flex items-center gap-2">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-6" />
-          <h1 className="text-lg">Work Experiences</h1>
+          <h1 className="text-lg">Work Gallery</h1>
         </div>
         <div className="flex items-center gap-3">
           <Button
@@ -108,19 +104,19 @@ export default function ExperienceContainer({ experiences }: PropTypes) {
           onRemove={onRemove}
           onReorder={onReorder}
           onEdit={onEdit as (data: SortableListItem) => void}
-          Card={ExperienceCard}
-        />
-        <ExperienceFormModal
-          hide={() => setForm({ ...form, isOpen: false })}
-          editData={form.editData}
-          onSuccess={onSuccess}
-          isOpen={form.isOpen}
-        />
-        <MetaDataFormModal
-          hide={() => setMetadataFormModal(false)}
-          isOpen={metadataFormModal}
+          Card={TechProjectCard}
         />
       </div>
+      <TechProjectFormModal
+        hide={() => setForm({ ...form, isOpen: false })}
+        editData={form.editData}
+        onSuccess={onSuccess}
+        isOpen={form.isOpen}
+      />
+      <MetaDataFormModal
+        hide={() => setMetadataFormModal(false)}
+        isOpen={metadataFormModal}
+      />
     </>
   );
 }

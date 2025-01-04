@@ -15,6 +15,22 @@ interface UserProfile {
       heading?: string;
       description?: string;
     };
+    work_gallery_metadata?: {
+      heading?: string;
+      description?: string;
+    };
+    work_experience_metadata?: {
+      heading?: string;
+      description?: string;
+    };
+    education_metadata?: {
+      heading?: string;
+      description?: string;
+    };
+    certification_metadata?: {
+      heading?: string;
+      description?: string;
+    };
   };
   created_at: string;
 }

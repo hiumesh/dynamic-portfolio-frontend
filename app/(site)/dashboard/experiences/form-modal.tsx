@@ -76,7 +76,6 @@ export default function ExperienceFormModal({
 
   useEffect(() => {
     if (editData) {
-      console.log(editData);
       form.reset();
       form.setValue("company_name", editData.company_name);
       form.setValue("job_type", editData.job_type);

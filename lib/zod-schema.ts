@@ -636,3 +636,194 @@ export const hackathonMetadataFormSchema = z
       .optional(),
   })
   .strict();
+
+export const techProjectFormSchema = z
+  .object({
+    title: z
+      .string()
+      .trim()
+      .min(6, { message: "Project name must be at least 6 characters long" })
+      .max(50, { message: "Project name must be at most 50 characters long" })
+      .regex(alphaNumericRegex, {
+        message:
+          "Project name must only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
+      }),
+    start_date: z
+      .string()
+      .trim()
+      .refine((value) => !isNaN(Date.parse(value)), {
+        message: "Start date must be a valid ISO date",
+      })
+      .refine(
+        (value) => {
+          const date = new Date(value);
+          const currentYear = new Date().getFullYear();
+          return (
+            date.getFullYear() >= 1900 && date.getFullYear() <= currentYear + 6
+          );
+        },
+        {
+          message: `Start date must be between the year 1900 and ${
+            new Date().getFullYear() + 6
+          }`,
+        }
+      ),
+    end_date: z
+      .string()
+      .trim()
+      .refine(
+        (value) => !value || !isNaN(Date.parse(value)), // Allow empty value (optional field)
+        {
+          message: "End date must be a valid ISO date",
+        }
+      )
+      .refine(
+        (value) => {
+          if (!value) return true; // Skip further checks if the value is empty
+          const date = new Date(value);
+          const currentYear = new Date().getFullYear();
+          return (
+            date.getFullYear() >= 1900 && date.getFullYear() <= currentYear + 6
+          );
+        },
+        {
+          message: `End date must be between the year 1900 and ${
+            new Date().getFullYear() + 6
+          }`,
+        }
+      )
+      .optional(),
+    currently_working: z.boolean().optional(),
+    description: z
+      .string()
+      .trim()
+      .min(10, { message: "Description is required" }),
+    skills_used: z
+      .array(z.string().trim().min(1, { message: "Skill is required" }))
+      .min(3, { message: "At least three skills is required" }),
+    links: z
+      .array(
+        z.object({
+          platform: z.string().optional(),
+          label: z
+            .string()
+            .optional()
+            .refine(
+              (value) =>
+                !value ||
+                z
+                  .string()
+                  .min(1, { message: "Label is required" })
+                  .safeParse(value).success,
+              {
+                message: "Label is required",
+              }
+            ),
+          url: z
+            .string()
+            .trim()
+            .optional()
+            .refine(
+              (value) => !value || z.string().url().safeParse(value).success,
+              {
+                message: "URL must be a valid URL",
+              }
+            ),
+        })
+      )
+      .optional(),
+    attachments: z
+      .array(
+        z.object({
+          name: z.string(),
+          type: z.string(),
+          size: z.number(),
+          url: z
+            .string()
+            .trim()
+            .url({
+              message: "Avatar must be a valid URL",
+            })
+            .optional(),
+        })
+      )
+      .optional(),
+  })
+  .strict()
+  .superRefine((data, ctx) => {
+    if (!data.end_date && !data.currently_working) {
+      ctx.addIssue({
+        path: ["end_date"],
+        code: z.ZodIssueCode.custom,
+        message: "End date is required",
+      });
+    }
+  });
+
+export const workGalleryMetadataFormSchema = z
+  .object({
+    heading: z
+      .string()
+      .trim()
+      .min(3, { message: "Heading is required" })
+      .max(100)
+      .optional(),
+    description: z
+      .string()
+      .trim()
+      .min(3, { message: "Description is required" })
+      .max(1000)
+      .optional(),
+  })
+  .strict();
+
+export const workExperienceMetadataFormSchema = z
+  .object({
+    heading: z
+      .string()
+      .trim()
+      .min(3, { message: "Heading is required" })
+      .max(100)
+      .optional(),
+    description: z
+      .string()
+      .trim()
+      .min(3, { message: "Description is required" })
+      .max(1000)
+      .optional(),
+  })
+  .strict();
+
+export const educationMetadataFormSchema = z
+  .object({
+    heading: z
+      .string()
+      .trim()
+      .min(3, { message: "Heading is required" })
+      .max(100)
+      .optional(),
+    description: z
+      .string()
+      .trim()
+      .min(3, { message: "Description is required" })
+      .max(1000)
+      .optional(),
+  })
+  .strict();
+
+export const certificationMetadataFormSchema = z
+  .object({
+    heading: z
+      .string()
+      .trim()
+      .min(3, { message: "Heading is required" })
+      .max(100)
+      .optional(),
+    description: z
+      .string()
+      .trim()
+      .min(3, { message: "Description is required" })
+      .max(1000)
+      .optional(),
+  })
+  .strict();

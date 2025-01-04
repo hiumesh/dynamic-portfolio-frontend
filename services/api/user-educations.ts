@@ -54,3 +54,16 @@ export async function reorderUserEducations(
 
   return processFetchResponse(response);
 }
+
+export async function updateMetadata(data: any) {
+  const response = await fetchWithAuth(
+    `${REST_URL}/users/educations/metadata`,
+    {
+      cache: "no-store",
+      method: "PUT",
+      body: JSON.stringify(data),
+    }
+  );
+
+  return processFetchResponse(response);
+}
