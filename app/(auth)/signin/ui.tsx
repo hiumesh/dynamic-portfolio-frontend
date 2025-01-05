@@ -50,7 +50,11 @@ export default function SignInUI() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       setLoading(true);
-      await signIn(data);
+      const { error } = await signIn(data);
+      if (error) {
+        setLoading(false);
+        showErrorToast(error);
+      }
     } catch (error: any) {
       setLoading(false);
       showErrorToast(error);

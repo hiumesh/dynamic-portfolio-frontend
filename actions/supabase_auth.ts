@@ -22,11 +22,12 @@ export async function signIn(
   if (error) {
     // redirect("/error");
     // throw new Error(error.message);
-    return { error };
+    return { error: { message: error.message } };
   }
 
   revalidatePath("/", "layout");
   redirect("/");
+  return {};
 }
 
 export async function initUpdatePassword(
@@ -41,8 +42,8 @@ export async function initUpdatePassword(
 
   const { data, error } = await supabase.auth.resetPasswordForEmail(email);
 
-  if (error) return { error };
-  return { data };
+  if (error) return { error: { message: error.message } };
+  return { data: { ...data } };
 }
 
 export async function signUp(

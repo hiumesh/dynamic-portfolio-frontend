@@ -19,6 +19,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { CaretSortIcon, ComponentPlaceholderIcon } from "@radix-ui/react-icons";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 export function NavUser({
   user,
@@ -30,6 +32,17 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const supabase = createClient();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log(error);
+    } else {
+      router.replace("/signin");
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -94,7 +107,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onSelect={handleSignOut}>
               <LogOut />
               Log out
             </DropdownMenuItem>
