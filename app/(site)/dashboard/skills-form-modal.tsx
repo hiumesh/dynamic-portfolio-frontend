@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/form";
 import { showErrorToast } from "@/lib/client-utils";
 import { skillsFormSchema } from "@/lib/zod-schema";
-import { updateUserSkills } from "@/services/api/users";
+import { updateSkills } from "@/services/api/portfolio";
 import { getSkills } from "@/services/skills-api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -51,7 +51,7 @@ export default function SkillsFormModal({
     try {
       setLoading(true);
 
-      const response = await updateUserSkills(data);
+      const response = await updateSkills(data);
 
       setLoading(false);
       if (response.error) {

@@ -17,9 +17,11 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useAppContext } from "@/providers/app-context";
+import Image from "next/image";
 
 // This is sample data.
 const data = {
@@ -48,27 +50,27 @@ const data = {
   navMain: [
     {
       title: "Portfolio",
-      url: "#",
+      url: "/dashboard/portfolio",
       icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "Education",
-          url: "/dashboard/educations",
-        },
-        {
-          title: "Work Experience",
-          url: "/dashboard/experiences",
-        },
-        {
-          title: "Certifications",
-          url: "/dashboard/certifications",
-        },
-        {
-          title: "Hackathons",
-          url: "/dashboard/hackathons",
-        },
-      ],
+      // isActive: true,
+      // items: [
+      //   {
+      //     title: "Education",
+      //     url: "/dashboard/educations",
+      //   },
+      //   {
+      //     title: "Work Experience",
+      //     url: "/dashboard/experiences",
+      //   },
+      //   {
+      //     title: "Certifications",
+      //     url: "/dashboard/certifications",
+      //   },
+      //   {
+      //     title: "Hackathons",
+      //     url: "/dashboard/hackathons",
+      //   },
+      // ],
     },
     {
       title: "Blogs",
@@ -143,9 +145,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      {/* <SidebarHeader>
-          <TeamSwitcher teams={data.teams} />
-        </SidebarHeader> */}
+      <SidebarHeader className="border-b">
+        <div className="px-2 flex items-center gap-3 h-6">
+          <Image src="/logo.svg" alt="Logo" width={25} height={25} />
+          <h1 className="">Flex Yourself</h1>
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>

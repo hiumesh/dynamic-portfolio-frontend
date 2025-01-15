@@ -225,6 +225,8 @@ export const profileFormSchema = z
           }`,
         }
       ),
+    about: z.string().trim().min(10, { message: "About is required" }),
+    tagline: z.string().trim().min(10, { message: "Tagline is required" }),
     work_domains: z
       .array(
         z.string().trim().regex(alphaNumericRegex, {

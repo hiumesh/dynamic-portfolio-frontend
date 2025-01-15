@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 
-import Navbar from "./navbar";
 import MainSection from "./main-section";
 import Footer from "./footer";
+import TopNavbar from "@/components/top-navbar";
 
 export default async function Home() {
   const supabase = createClient();
@@ -12,7 +12,7 @@ export default async function Home() {
   const user = data?.user;
   return (
     <>
-      <Navbar user={user} />
+      <TopNavbar user={user} />
       <MainSection />
       <Footer />
     </>

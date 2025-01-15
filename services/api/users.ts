@@ -1,6 +1,5 @@
 "use server";
 
-import { APIServiceHandler } from "@/types/api";
 import { REST_URL } from "@/lib/constants";
 import { fetchWithAuth, processFetchResponse } from "@/lib/server-utils";
 
@@ -29,14 +28,5 @@ export async function updateProfile(body: any) {
     body: JSON.stringify(body),
   });
 
-  return processFetchResponse(response);
-}
-
-export async function updateUserSkills(body: any) {
-  const response = await fetchWithAuth(`${REST_URL}/users/profile/skills`, {
-    cache: "no-store",
-    method: "PUT",
-    body: JSON.stringify(body),
-  });
   return processFetchResponse(response);
 }

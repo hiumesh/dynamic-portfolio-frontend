@@ -22,10 +22,11 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Textarea,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { set, z } from "zod";
+import { z } from "zod";
 import { updateProfile } from "@/services/api/users";
 import { CheckIcon } from "@/lib/icons";
 import { socialProfilesOptions, workDomainOptions } from "@/lib/select-options";
@@ -36,11 +37,19 @@ import { DropzoneOptions } from "react-dropzone";
 import { showErrorToast } from "@/lib/client-utils";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
-import LocationSelector from "@/components/location-picker";
 
 interface PropTypes {
   isOpen: boolean;
-  editData: UserProfile | null;
+  editData: {
+    name?: string;
+    tagline?: string;
+    about?: string;
+    avatar?: string;
+    work_domains?: string[];
+    college?: string;
+    graduation_year?: string;
+    social_profiles?: { platform: string; url: string }[];
+  };
   onSuccess?: (data?: any) => void;
   hide: () => void;
 }
@@ -150,18 +159,17 @@ export default function ProfileFormModal({
   useEffect(() => {
     if (editData) {
       form.reset();
-      form.setValue("full_name", editData.full_name || "");
-      form.setValue("work_domains", editData.attributes?.work_domains || []);
-      form.setValue("college", editData.attributes?.college || "");
-      form.setValue(
-        "graduation_year",
-        editData.attributes?.graduation_year || ""
-      );
+      form.setValue("full_name", editData.name || "");
+      form.setValue("work_domains", editData?.work_domains || []);
+      form.setValue("college", editData?.college || "");
+      form.setValue("graduation_year", editData?.graduation_year || "");
+      form.setValue("tagline", editData?.tagline || "");
+      form.setValue("about", editData?.about || "");
       form.setValue(
         "social_profiles",
-        setupSocialProfiles(editData.attributes?.social_profiles)
+        setupSocialProfiles(editData?.social_profiles)
       );
-      form.setValue("profile_picture", setProfileImage(editData.avatar_url));
+      form.setValue("profile_picture", setProfileImage(editData?.avatar));
     } else form.reset();
   }, [editData, form]);
 
@@ -175,7 +183,7 @@ export default function ProfileFormModal({
         } else hide();
       }}
     >
-      <ModalContent>
+      <ModalContent className="overflow-auto">
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1"></ModalHeader>
@@ -280,6 +288,57 @@ export default function ProfileFormModal({
                               </FormItem>
                             );
                           }}
+                        />
+                      </div>
+                      <div>
+                        <FormField
+                          control={form.control}
+                          name="about"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-col space-y-1.5 flex-1">
+                              <FormLabel className="font-normal">
+                                About
+                              </FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  {...field}
+                                  value={field.value || ""}
+                                  minRows={4}
+                                  onChange={(e) =>
+                                    field.onChange(e.target.value || undefined)
+                                  }
+                                  placeholder="About..."
+                                  aria-label="About"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div>
+                        <FormField
+                          control={form.control}
+                          name="tagline"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-col space-y-1.5 flex-1">
+                              <FormLabel className="font-normal">
+                                Tagline
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  value={field.value || ""}
+                                  onChange={(e) =>
+                                    field.onChange(e.target.value || undefined)
+                                  }
+                                  placeholder="Tagline..."
+                                  aria-label="Tagline"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
                         />
                       </div>
                       <div className="flex gap-4 items-start">

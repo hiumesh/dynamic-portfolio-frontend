@@ -30,11 +30,20 @@ import { z } from "zod";
 interface PropTypes {
   isOpen: boolean;
   hide: () => void;
+  editData?: {
+    heading?: string;
+    description?: string;
+  };
+  onSuccess?: (data: any) => void;
 }
 
-export function MetaDataFormModal({ isOpen, hide }: PropTypes) {
+export function EducationMetaDataFormModal({
+  isOpen,
+  hide,
+  editData,
+  onSuccess,
+}: PropTypes) {
   const [loading, setLoading] = useState(false);
-  const { profile, refreshProfile } = useAppContext();
 
   const form = useForm<z.infer<typeof educationMetadataFormSchema>>({
     resolver: zodResolver(educationMetadataFormSchema),
@@ -60,7 +69,7 @@ export function MetaDataFormModal({ isOpen, hide }: PropTypes) {
           "There was a problem with your request."
         );
       } else {
-        refreshProfile();
+        onSuccess?.(response.data);
         hide();
       }
     } catch (error: any) {
@@ -70,20 +79,14 @@ export function MetaDataFormModal({ isOpen, hide }: PropTypes) {
   };
 
   useEffect(() => {
-    if (profile?.attributes?.education_metadata) {
-      form.setValue(
-        "heading",
-        profile?.attributes?.education_metadata?.heading
-      );
-      form.setValue(
-        "description",
-        profile?.attributes?.education_metadata?.description
-      );
+    if (editData) {
+      form.setValue("heading", editData?.heading);
+      form.setValue("description", editData?.description);
     } else {
       form.setValue("heading", "");
       form.setValue("description", "");
     }
-  }, [form, profile?.attributes?.education_metadata]);
+  }, [editData, form]);
 
   return (
     <Modal

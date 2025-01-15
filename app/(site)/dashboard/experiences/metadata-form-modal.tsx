@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/form";
 import { showErrorToast } from "@/lib/client-utils";
 import { workExperienceMetadataFormSchema } from "@/lib/zod-schema";
-import { useAppContext } from "@/providers/app-context";
 import { updateMetadata } from "@/services/api/user_experience";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -30,11 +29,20 @@ import { z } from "zod";
 interface PropTypes {
   isOpen: boolean;
   hide: () => void;
+  editData?: {
+    heading?: string;
+    description?: string;
+  };
+  onSuccess?: (data: any) => void;
 }
 
-export function MetaDataFormModal({ isOpen, hide }: PropTypes) {
+export function WorkExperienceMetaDataFormModal({
+  isOpen,
+  hide,
+  editData,
+  onSuccess,
+}: PropTypes) {
   const [loading, setLoading] = useState(false);
-  const { profile, refreshProfile } = useAppContext();
 
   const form = useForm<z.infer<typeof workExperienceMetadataFormSchema>>({
     resolver: zodResolver(workExperienceMetadataFormSchema),
@@ -60,7 +68,7 @@ export function MetaDataFormModal({ isOpen, hide }: PropTypes) {
           "There was a problem with your request."
         );
       } else {
-        refreshProfile();
+        onSuccess?.(response.data);
         hide();
       }
     } catch (error: any) {
@@ -70,20 +78,14 @@ export function MetaDataFormModal({ isOpen, hide }: PropTypes) {
   };
 
   useEffect(() => {
-    if (profile?.attributes?.work_experience_metadata) {
-      form.setValue(
-        "heading",
-        profile?.attributes?.work_experience_metadata?.heading
-      );
-      form.setValue(
-        "description",
-        profile?.attributes?.work_experience_metadata?.description
-      );
+    if (editData) {
+      form.setValue("heading", editData?.heading);
+      form.setValue("description", editData?.description);
     } else {
       form.setValue("heading", "");
       form.setValue("description", "");
     }
-  }, [form, profile?.attributes?.work_experience_metadata]);
+  }, [editData, form]);
 
   return (
     <Modal

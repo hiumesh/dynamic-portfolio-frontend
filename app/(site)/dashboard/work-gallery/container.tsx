@@ -9,7 +9,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit3, Plus } from "lucide-react";
-import { MetaDataFormModal } from "./metadata-form-modal";
+import { WorkGalleryMetaDataFormModal } from "./metadata-form-modal";
 import TechProjectCard from "./tech-project-card";
 import TechProjectFormModal from "./tech-project-form";
 import { remove, reorder } from "@/services/api/work-gallery";
@@ -113,7 +113,7 @@ export default function WorkGalleryContainer({ items }: PropTypes) {
         onSuccess={onSuccess}
         isOpen={form.isOpen}
       />
-      <MetaDataFormModal
+      <WorkGalleryMetaDataFormModal
         hide={() => setMetadataFormModal(false)}
         isOpen={metadataFormModal}
       />

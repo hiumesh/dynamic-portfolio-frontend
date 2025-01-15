@@ -22,7 +22,7 @@ const items = [
   },
 ];
 
-export default function Navbar({ user }: PropTypes) {
+export default function TopNavbar({ user }: PropTypes) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 shadow-md p-2 bg-black">
       <MaxWidthWrapper>
@@ -47,7 +47,6 @@ export default function Navbar({ user }: PropTypes) {
               </Link>
             ))}
           </div>
-
           <div>
             {user ? (
               <Link

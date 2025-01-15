@@ -15,7 +15,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit3, Plus } from "lucide-react";
-import { MetaDataFormModal } from "./metadata-form-modal";
+import { EducationMetaDataFormModal } from "./metadata-form-modal";
 
 interface PropTypes {
   educations: UserEducations;
@@ -115,7 +115,7 @@ export default function EducationContainer({ educations }: PropTypes) {
           onSuccess={onSuccess}
           isOpen={form.isOpen}
         />
-        <MetaDataFormModal
+        <EducationMetaDataFormModal
           hide={() => setMetadataFormModal(false)}
           isOpen={metadataFormModal}
         />

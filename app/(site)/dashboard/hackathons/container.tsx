@@ -15,7 +15,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit3, Plus } from "lucide-react";
-import { MetaDataFormModal } from "./metadata-form-modal";
+import { HackathonMetaDataFormModal } from "./metadata-form-modal";
 
 interface PropTypes {
   hackathons: UserHackathons;
@@ -116,7 +116,7 @@ export default function HackathonContainer({ hackathons }: PropTypes) {
         onSuccess={onSuccess}
         isOpen={form.isOpen}
       />
-      <MetaDataFormModal
+      <HackathonMetaDataFormModal
         hide={() => setMetadataFormModal(false)}
         isOpen={metadataFormModal}
       />

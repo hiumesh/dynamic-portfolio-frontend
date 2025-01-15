@@ -15,7 +15,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit3, Plus } from "lucide-react";
-import { MetaDataFormModal } from "./metadata-form-modal";
+import { CertificationMetaDataFormModal } from "./metadata-form-modal";
 
 interface PropTypes {
   certifications: UserCertifications;
@@ -115,7 +115,7 @@ export default function CertificateContainer({ certifications }: PropTypes) {
           onSuccess={onSuccess}
           isOpen={form.isOpen}
         />
-        <MetaDataFormModal
+        <CertificationMetaDataFormModal
           hide={() => setMetadataFormModal(false)}
           isOpen={metadataFormModal}
         />

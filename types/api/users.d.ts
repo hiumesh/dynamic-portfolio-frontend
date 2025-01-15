@@ -14,22 +14,27 @@ interface UserProfile {
     hackathon_metadata?: {
       heading?: string;
       description?: string;
+      count?: number;
     };
     work_gallery_metadata?: {
       heading?: string;
       description?: string;
+      count?: number;
     };
     work_experience_metadata?: {
       heading?: string;
       description?: string;
+      count?: number;
     };
     education_metadata?: {
       heading?: string;
       description?: string;
+      count?: number;
     };
     certification_metadata?: {
       heading?: string;
       description?: string;
+      count?: number;
     };
   };
   created_at: string;
