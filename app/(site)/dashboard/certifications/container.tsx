@@ -9,13 +9,13 @@ import CertificateCard from "./card";
 import {
   deleteUserCertification,
   reorderUserCertification,
-} from "@/services/api/user-certification";
+} from "@/services/api/certification";
 import CertificateFormModal from "./form-modal";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit3, Plus } from "lucide-react";
-import { CertificationMetaDataFormModal } from "./metadata-form-modal";
+import { CertificationMetaDataFormModal } from "@/components/metadata-forms/certification-metadata-form-modal";
 
 interface PropTypes {
   certifications: UserCertifications;

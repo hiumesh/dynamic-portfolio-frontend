@@ -18,7 +18,7 @@ import EducationFormFields from "./form-fields";
 import {
   createUserEducation,
   updateUserEducation,
-} from "@/services/api/user-educations";
+} from "@/services/api/educations";
 import { showErrorToast } from "@/lib/client-utils";
 
 interface PropTypes {

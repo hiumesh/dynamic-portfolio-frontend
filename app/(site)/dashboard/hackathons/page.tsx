@@ -1,6 +1,5 @@
-import { getUserWorkExperiences } from "@/services/api/user_experience";
 import HackathonContainer from "./container";
-import { getUserHackathons } from "@/services/api/user_hackathon";
+import { getUserHackathons } from "@/services/api/hackathon";
 
 export default async function Experiences() {
   const { data, error } = await getUserHackathons();

@@ -1,4 +1,4 @@
-import { getUserEducations } from "@/services/api/user-educations";
+import { getUserEducations } from "@/services/api/educations";
 import EducationContainer from "./container";
 
 export default async function Educations() {

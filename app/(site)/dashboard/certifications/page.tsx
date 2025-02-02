@@ -1,4 +1,4 @@
-import { getUserCertifications } from "@/services/api/user-certification";
+import { getUserCertifications } from "@/services/api/certification";
 import CertificateContainer from "./container";
 
 export default async function Certifications() {

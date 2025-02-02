@@ -60,6 +60,18 @@ export async function reorderUserCertification(
 
   return processFetchResponse(response);
 }
+export async function getMetadata() {
+  const response = await fetchWithAuth(
+    `${REST_URL}/portfolio/certifications/metadata`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  return processFetchResponse<
+    Portfolio["additional_details"]["certification_metadata"]
+  >(response);
+}
 
 export async function updateMetadata(data: any) {
   const response = await fetchWithAuth(

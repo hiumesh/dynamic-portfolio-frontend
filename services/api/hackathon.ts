@@ -61,7 +61,20 @@ export async function reorderUserHackathons(
   return processFetchResponse(response);
 }
 
-export async function updateHackathonMetadata(data: any) {
+export async function getMetadata() {
+  const response = await fetchWithAuth(
+    `${REST_URL}/portfolio/hackathons/metadata`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  return processFetchResponse<
+    Portfolio["additional_details"]["hackathon_metadata"]
+  >(response);
+}
+
+export async function updateMetadata(data: any) {
   const response = await fetchWithAuth(
     `${REST_URL}/portfolio/hackathons/metadata`,
     {

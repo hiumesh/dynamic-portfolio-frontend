@@ -19,7 +19,7 @@ import { showErrorToast } from "@/lib/client-utils";
 import {
   createUserCertification,
   updateUserCertification,
-} from "@/services/api/user-certification";
+} from "@/services/api/certification";
 
 interface PropTypes {
   isOpen: boolean;

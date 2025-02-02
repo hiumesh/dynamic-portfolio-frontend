@@ -1,4 +1,4 @@
-import { getUserWorkExperiences } from "@/services/api/user_experience";
+import { getUserWorkExperiences } from "@/services/api/experience";
 import ExperienceContainer from "./container";
 
 export default async function Experiences() {

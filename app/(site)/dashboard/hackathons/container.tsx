@@ -10,12 +10,12 @@ import HackathonCard from "./card";
 import {
   deleteUserHackathon,
   reorderUserHackathons,
-} from "@/services/api/user_hackathon";
+} from "@/services/api/hackathon";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit3, Plus } from "lucide-react";
-import { HackathonMetaDataFormModal } from "./metadata-form-modal";
+import { HackathonMetaDataFormModal } from "@/components/metadata-forms/hackathon-metadata-form-modal";
 
 interface PropTypes {
   hackathons: UserHackathons;

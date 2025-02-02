@@ -19,7 +19,7 @@ import { showErrorToast } from "@/lib/client-utils";
 import {
   createUserWorkExperience,
   updateUserWorkExperience,
-} from "@/services/api/user_experience";
+} from "@/services/api/experience";
 
 interface PropTypes {
   isOpen: boolean;

@@ -9,10 +9,10 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit3, Plus } from "lucide-react";
-import { WorkGalleryMetaDataFormModal } from "./metadata-form-modal";
 import TechProjectCard from "./tech-project-card";
 import TechProjectFormModal from "./tech-project-form";
 import { remove, reorder } from "@/services/api/work-gallery";
+import { WorkGalleryMetaDataFormModal } from "@/components/metadata-forms/work-gallery-metadata-form-modal";
 
 interface PropTypes {
   items: WorkGalleryItems;

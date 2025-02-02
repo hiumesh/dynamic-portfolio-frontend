@@ -9,8 +9,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { showErrorToast } from "@/lib/client-utils";
-import { educationMetadataFormSchema } from "@/lib/zod-schema";
-import { getMetadata, updateMetadata } from "@/services/api/blog";
+import { certificationMetadataFormSchema } from "@/lib/zod-schema";
+import { getMetadata, updateMetadata } from "@/services/api/certification";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -34,11 +34,15 @@ interface PropTypes {
   onSuccess?: (data: any) => void;
 }
 
-export function BlogMetaDataFormModal({ isOpen, hide, onSuccess }: PropTypes) {
+export function CertificationMetaDataFormModal({
+  isOpen,
+  hide,
+  onSuccess,
+}: PropTypes) {
   const [loading, setLoading] = useState(false);
   const { data, dataUpdatedAt, error, isLoading, isRefetching, refetch } =
     useQuery({
-      queryKey: ["blog_metadata"],
+      queryKey: ["certification_metadata"],
       queryFn: async () => {
         const response = await getMetadata();
         if (response.error) {
@@ -49,12 +53,12 @@ export function BlogMetaDataFormModal({ isOpen, hide, onSuccess }: PropTypes) {
       refetchOnWindowFocus: false,
     });
 
-  const form = useForm<z.infer<typeof educationMetadataFormSchema>>({
-    resolver: zodResolver(educationMetadataFormSchema),
+  const form = useForm<z.infer<typeof certificationMetadataFormSchema>>({
+    resolver: zodResolver(certificationMetadataFormSchema),
   });
 
   const onSubmit = useCallback(
-    async (data: z.infer<typeof educationMetadataFormSchema>) => {
+    async (data: z.infer<typeof certificationMetadataFormSchema>) => {
       try {
         setLoading(true);
 

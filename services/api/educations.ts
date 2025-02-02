@@ -61,6 +61,19 @@ export async function reorderUserEducations(
   return processFetchResponse(response);
 }
 
+export async function getMetadata() {
+  const response = await fetchWithAuth(
+    `${REST_URL}/portfolio/educations/metadata`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  return processFetchResponse<
+    Portfolio["additional_details"]["education_metadata"]
+  >(response);
+}
+
 export async function updateMetadata(data: any) {
   const response = await fetchWithAuth(
     `${REST_URL}/portfolio/educations/metadata`,

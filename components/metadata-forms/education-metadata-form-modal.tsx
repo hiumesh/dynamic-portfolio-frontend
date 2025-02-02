@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { showErrorToast } from "@/lib/client-utils";
 import { educationMetadataFormSchema } from "@/lib/zod-schema";
-import { getMetadata, updateMetadata } from "@/services/api/blog";
+import { getMetadata, updateMetadata } from "@/services/api/educations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -34,11 +34,15 @@ interface PropTypes {
   onSuccess?: (data: any) => void;
 }
 
-export function BlogMetaDataFormModal({ isOpen, hide, onSuccess }: PropTypes) {
+export function EducationMetaDataFormModal({
+  isOpen,
+  hide,
+  onSuccess,
+}: PropTypes) {
   const [loading, setLoading] = useState(false);
   const { data, dataUpdatedAt, error, isLoading, isRefetching, refetch } =
     useQuery({
-      queryKey: ["blog_metadata"],
+      queryKey: ["education_metadata"],
       queryFn: async () => {
         const response = await getMetadata();
         if (response.error) {

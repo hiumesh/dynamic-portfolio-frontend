@@ -19,7 +19,7 @@ import { showErrorToast } from "@/lib/client-utils";
 import {
   createUserHackathon,
   updateUserHackathon,
-} from "@/services/api/user_hackathon";
+} from "@/services/api/hackathon";
 
 interface PropTypes {
   isOpen: boolean;

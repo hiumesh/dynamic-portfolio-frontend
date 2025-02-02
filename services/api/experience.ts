@@ -61,6 +61,19 @@ export async function reorderUserWorkExperiences(
   return processFetchResponse(response);
 }
 
+export async function getMetadata() {
+  const response = await fetchWithAuth(
+    `${REST_URL}/portfolio/experiences/metadata`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  return processFetchResponse<
+    Portfolio["additional_details"]["work_experience_metadata"]
+  >(response);
+}
+
 export async function updateMetadata(data: any) {
   const response = await fetchWithAuth(
     `${REST_URL}/portfolio/experiences/metadata`,

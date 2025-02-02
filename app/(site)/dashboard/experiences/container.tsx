@@ -10,12 +10,12 @@ import ExperienceCard from "./card";
 import {
   deleteUserWorkExperience,
   reorderUserWorkExperiences,
-} from "@/services/api/user_experience";
+} from "@/services/api/experience";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Edit3, Plus } from "lucide-react";
-import { WorkExperienceMetaDataFormModal } from "./metadata-form-modal";
+import { WorkExperienceMetaDataFormModal } from "@/components/metadata-forms/experience-metadata-form-modal";
 
 interface PropTypes {
   experiences: UserWorkExperiences;

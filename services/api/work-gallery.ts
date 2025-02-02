@@ -52,6 +52,16 @@ export async function reorder(id: number | string, newIndex: number) {
   return processFetchResponse(response);
 }
 
+export async function getMetadata() {
+  const response = await fetchWithAuth(`${REST_URL}/work-gallery/metadata`, {
+    cache: "no-store",
+  });
+
+  return processFetchResponse<
+    Portfolio["additional_details"]["work_gallery_metadata"]
+  >(response);
+}
+
 export async function updateMetadata(data: any) {
   const response = await fetchWithAuth(`${REST_URL}/work-gallery/metadata`, {
     cache: "no-store",
