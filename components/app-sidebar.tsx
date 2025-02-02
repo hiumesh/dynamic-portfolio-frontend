@@ -74,7 +74,7 @@ const data = {
     },
     {
       title: "Blogs",
-      url: "#",
+      url: "/dashboard/blogs",
       icon: Bot,
       // items: [
       //   {

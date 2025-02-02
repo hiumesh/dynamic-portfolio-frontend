@@ -829,3 +829,48 @@ export const certificationMetadataFormSchema = z
       .optional(),
   })
   .strict();
+
+export const blogFormSchema = z
+  .object({
+    cover_image: z
+      .string()
+      .trim()
+      .transform((value) => (value === "" ? undefined : value))
+      .refine((value) => !value || z.string().url().safeParse(value).success, {
+        message: "Must be a valid URL",
+      })
+      .optional(),
+
+    tags: z.array(z.string().trim().min(1, { message: "Tag is required" })),
+    title: z.string().trim().min(3, { message: "Title is required" }).max(100),
+    body: z
+      .string()
+      .trim()
+      .max(10000)
+      .transform((value) => (value === "" ? undefined : value))
+      .optional()
+      .refine(
+        (value) =>
+          value === undefined || (value.length >= 3 && value.length <= 10000),
+        {
+          message: "Body must be between 3 and 10000 characters long",
+        }
+      ),
+    attachments: z
+      .array(
+        z.object({
+          name: z.string(),
+          type: z.string(),
+          size: z.number(),
+          url: z
+            .string()
+            .trim()
+            .url({
+              message: "Avatar must be a valid URL",
+            })
+            .optional(),
+        })
+      )
+      .optional(),
+  })
+  .strict();

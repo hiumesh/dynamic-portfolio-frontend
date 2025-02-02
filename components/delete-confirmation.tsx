@@ -17,7 +17,7 @@ interface DeleteConfirmationProps {
   title?: string;
   itemName: string;
   button?: React.ReactNode;
-  onDelete?: () => Promise<boolean>;
+  onDelete?: () => Promise<boolean> | void;
 }
 
 export default function DeleteConfirmation({
@@ -33,6 +33,7 @@ export default function DeleteConfirmation({
     try {
       setLoading(true);
       const isSuccess = await onDelete?.();
+      if (typeof isSuccess !== "boolean") return;
       setLoading(false);
       if (isSuccess) {
         onClose();
