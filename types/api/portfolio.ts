@@ -1,3 +1,16 @@
+interface PortfolioListItem {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  slug: string;
+  college?: string;
+  skills: string[];
+  tagline: string;
+  work_domains: string[];
+  social_profiles: { platform: string; url: string }[];
+}
+
 interface Portfolio {
   user_id: string;
   status: string;

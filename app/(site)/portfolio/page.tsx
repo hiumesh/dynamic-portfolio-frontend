@@ -1,7 +1,8 @@
 import TopNavbar from "@/components/top-navbar";
 import { createClient } from "@/lib/supabase/server";
 import FilterMenu from "./filter-menu";
-import Container from "./container";
+import ListContainer from "./list-container";
+import PortfolioContextProvider from "./context";
 
 export default async function Portfolio() {
   const supabase = createClient();
@@ -12,11 +13,11 @@ export default async function Portfolio() {
   return (
     <>
       <TopNavbar user={user} />
-      <main className="pt-14">
-        <FilterMenu />
-        <Container>
-          <div>Container</div>
-        </Container>
+      <main className="overflow-auto h-screen">
+        <PortfolioContextProvider>
+          <FilterMenu />
+          <ListContainer />
+        </PortfolioContextProvider>
       </main>
     </>
   );

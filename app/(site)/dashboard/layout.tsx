@@ -1,27 +1,9 @@
 "use client";
 
 import { AppSidebar } from "@/components/app-sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { usePathname } from "next/navigation";
-
-const pathnameToLabel: Record<string, string> = {
-  educations: "Education",
-  experiences: "Work Experience",
-  certifications: "Certifications",
-};
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { useAppContext } from "@/providers/app-context";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function DashboardLayout({
   children,
@@ -29,41 +11,29 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
+  const router = useRouter();
 
-  const secondaryRoute =
-    pathname.split("/").pop()! in pathnameToLabel
-      ? pathnameToLabel[pathname.split("/").pop()!]
-      : undefined;
+  const { profile } = useAppContext();
+
+  if (profile === undefined || profile === null) return;
+
+  if (
+    (profile.full_name === null || profile.slug === null) &&
+    pathname !== "/profile-setup"
+  )
+    return router.replace("/profile-setup");
+
+  if (
+    pathname === "/profile-setup" &&
+    profile.full_name !== null &&
+    profile.slug !== null
+  )
+    return router.replace("/dashboard");
 
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        {/* <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
-                </BreadcrumbItem>
-
-                {secondaryRoute && (
-                  <>
-                    <BreadcrumbSeparator className="hidden md:block" />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage>{secondaryRoute}</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </>
-                )}
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header> */}
-        {/* <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div> */}
-        {children}
-      </SidebarInset>
+      <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>
   );
 }

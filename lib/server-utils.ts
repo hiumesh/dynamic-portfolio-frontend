@@ -4,21 +4,33 @@ import { createClient } from "./supabase/server";
 
 export async function fetchWithAuth(
   url: string | URL | globalThis.Request,
-  init: RequestInit
+  init: RequestInit,
+  options: { continueIfNotAuthenticated?: boolean } = {
+    continueIfNotAuthenticated: false,
+  }
 ) {
   const supabase = createClient();
   const { data } = await supabase.auth.getSession();
-  if (!data.session) throw new Error("No session found!");
+  if (!data.session && !options?.continueIfNotAuthenticated)
+    throw new Error("No session found!");
 
-  const options: RequestInit = {
-    ...init,
-    headers: {
-      ...init?.headers,
-      Authorization: `Bearer ${data.session.access_token}`,
-    },
-  };
+  let fetchOptions: RequestInit;
 
-  return fetch(url, options);
+  if (data.session) {
+    fetchOptions = {
+      ...init,
+      headers: {
+        ...init?.headers,
+        Authorization: `Bearer ${data.session.access_token}`,
+      },
+    };
+  } else {
+    fetchOptions = {
+      ...init,
+    };
+  }
+
+  return fetch(url, fetchOptions);
 }
 
 export async function processFetchResponse<T = any>(

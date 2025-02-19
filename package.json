@@ -33,6 +33,7 @@
     "@supabase/supabase-js": "^2.45.2",
     "@tanstack/react-query": "^5.52.2",
     "@uiw/react-md-editor": "^4.0.5",
+    "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
@@ -46,6 +47,7 @@
     "react-dom": "^18",
     "react-dropzone": "^14.3.5",
     "react-hook-form": "^7.53.0",
+    "react-intersection-observer": "^9.15.1",
     "react-markdown": "^9.0.1",
     "rehype-sanitize": "^6.0.0",
     "sonner": "^1.7.0",
@@ -54,13 +56,18 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@snaplet/copycat": "^6.0.0",
+    "@snaplet/seed": "^0.98.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.6",
     "postcss": "^8",
+    "postgres": "^3.4.5",
     "sass": "^1.79.5",
+    "supabase": "^2.12.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
