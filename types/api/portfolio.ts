@@ -12,7 +12,7 @@ interface PortfolioListItem {
 }
 
 interface Portfolio {
-  user_id: string;
+  id: string;
   status: string;
   basic_details: {
     email: string;

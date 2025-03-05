@@ -13,13 +13,22 @@ import {
   Skeleton,
 } from "@nextui-org/react";
 import { Quote } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function PortfolioCard({ data }: { data: PortfolioListItem }) {
+  const router = useRouter();
   return (
-    <Card className="max-w-[400px]" isHoverable>
+    <Card
+      className="max-w-[400px]"
+      isHoverable
+      isPressable
+      onPress={() => {
+        router.push(`/portfolio/${data.slug}/default`);
+      }}
+    >
       <CardHeader className="flex gap-3">
         <Avatar isBordered radius="sm" src={data.avatar} name={data.name} />
-        <div className="flex flex-col">
+        <div className="flex flex-col text-left">
           <p className="text-md">{data.name}</p>
           <p className="text-small text-default-500">
             {data?.college || "Graduation Not Mentioned"}

@@ -2,7 +2,6 @@
 
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Input } from "@nextui-org/react";
-import { useQueryClient } from "@tanstack/react-query";
 import _ from "lodash";
 import { Search } from "lucide-react";
 import { usePortfolioContext } from "./context";
@@ -15,7 +14,7 @@ export default function FilterMenu() {
   }, 500);
 
   return (
-    <MaxWidthWrapper className="sticky top-0 z-20 bg-background pt-16 pb-4 mb-3">
+    <MaxWidthWrapper className="sticky top-12 z-20 bg-background py-3 mb-3">
       <div>
         <Input
           className="max-w-xs"

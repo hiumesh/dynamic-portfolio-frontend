@@ -24,7 +24,7 @@ const items = [
 
 export default function TopNavbar({ user }: PropTypes) {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 shadow-md p-2 bg-black">
+    <nav className="sticky top-0 z-30 shadow-md p-2 bg-black">
       <MaxWidthWrapper>
         <div className="flex justify-between items-center gap-5">
           <div>

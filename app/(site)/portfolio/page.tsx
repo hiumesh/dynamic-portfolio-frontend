@@ -13,12 +13,10 @@ export default async function Portfolio() {
   return (
     <>
       <TopNavbar user={user} />
-      <main className="overflow-auto h-screen">
-        <PortfolioContextProvider>
-          <FilterMenu />
-          <ListContainer />
-        </PortfolioContextProvider>
-      </main>
+      <PortfolioContextProvider>
+        <FilterMenu />
+        <ListContainer />
+      </PortfolioContextProvider>
     </>
   );
 }

@@ -24,6 +24,44 @@ export async function getAll({
   );
 }
 
+export async function getBySlug(slug: string) {
+  const response = await fetchWithAuth(
+    `${REST_URL}/portfolio/${slug}`,
+    {
+      cache: "no-store",
+    },
+    { continueIfNotAuthenticated: true }
+  );
+
+  return processFetchResponse<Portfolio>(response);
+}
+
+export async function getSubDomainBySlug(
+  slug: string,
+  module:
+    | "educations"
+    | "work_experiences"
+    | "certifications"
+    | "hackathons"
+    | "works"
+) {
+  const response = await fetchWithAuth(
+    `${REST_URL}/portfolio/${slug}/${module}`,
+    {
+      cache: "no-store",
+    },
+    { continueIfNotAuthenticated: true }
+  );
+
+  return processFetchResponse<
+    | UserEducations
+    | UserWorkExperiences
+    | UserCertifications
+    | UserHackathons
+    | WorkGalleryItems
+  >(response);
+}
+
 export async function get() {
   const response = await fetchWithAuth(`${REST_URL}/portfolio/user`, {
     cache: "no-store",
