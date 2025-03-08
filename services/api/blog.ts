@@ -3,18 +3,63 @@
 import { REST_URL } from "@/lib/constants";
 import { fetchWithAuth, processFetchResponse } from "@/lib/server-utils";
 
-export async function get() {
-  const response = await fetchWithAuth(`${REST_URL}/blogs`, {
-    cache: "no-store",
-  });
+export async function getAll({
+  cursor,
+  query,
+}: {
+  cursor?: string | number;
+  query?: string;
+}) {
+  const queryParams = [];
+  if (cursor) queryParams.push(`cursor=${cursor}`);
+  if (query) queryParams.push(`query=${query}`);
+  const response = await fetchWithAuth(
+    `${REST_URL}/blogs?${queryParams.join("&")}`,
+    {
+      cache: "no-store",
+    },
+    { continueIfNotAuthenticated: true }
+  );
 
-  return processFetchResponse<BlogPosts>(response);
+  return processFetchResponse<{ list: BlogPost[]; cursor: number }>(response);
+}
+
+export async function get({
+  cursor,
+  query,
+}: {
+  cursor?: string | number;
+  query?: string;
+}) {
+  const queryParams = [];
+  if (cursor) queryParams.push(`cursor=${cursor}`);
+  if (query) queryParams.push(`query=${query}`);
+  const response = await fetchWithAuth(
+    `${REST_URL}/blogs/user?${queryParams.join("&")}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  return processFetchResponse<{ list: BlogPost[]; cursor: number }>(response);
 }
 
 export async function getDetail(id: string | number) {
-  const response = await fetchWithAuth(`${REST_URL}/blogs/${id}`, {
+  const response = await fetchWithAuth(`${REST_URL}/blogs/user/${id}`, {
     cache: "no-store",
   });
+
+  return processFetchResponse<Blog>(response);
+}
+
+export async function getDetailBySlug(slug: string) {
+  const response = await fetchWithAuth(
+    `${REST_URL}/blogs/${slug}`,
+    {
+      cache: "no-store",
+    },
+    { continueIfNotAuthenticated: true }
+  );
 
   return processFetchResponse<Blog>(response);
 }
@@ -52,6 +97,7 @@ export async function update(
 export async function takedown(id: string | number) {
   const response = await fetchWithAuth(`${REST_URL}/blogs/${id}/unpublish`, {
     cache: "no-store",
+    method: "PUT",
   });
 
   return processFetchResponse(response);

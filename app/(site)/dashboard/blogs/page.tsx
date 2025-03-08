@@ -13,7 +13,7 @@ export default async function Blogs() {
   await queryClient.prefetchQuery({
     queryKey: ["users_blogs"],
     queryFn: async () => {
-      const response = await get();
+      const response = await get({ cursor: 0 });
       if (response.error) {
         throw new Error(response.error.message);
       }
