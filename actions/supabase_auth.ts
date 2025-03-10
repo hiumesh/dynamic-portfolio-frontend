@@ -26,8 +26,7 @@ export async function signIn(
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
-  return {};
+  redirect("/dashboard");
 }
 
 export async function initUpdatePassword(

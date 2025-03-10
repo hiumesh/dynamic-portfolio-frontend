@@ -4,9 +4,10 @@ import SkillsCard from "./skills-card";
 
 export default function Dashobard() {
   return (
-    <div className="grid grid-cols-8">
-      <ProfileCard className="col-span-4  " />
-      <SkillsCard className="col-span-4" />
-    </div>
+    <main className="flex justify-center">
+      <section className="p-10">
+        <h2 className="text-xl text-gray-500">Coming Soon...</h2>
+      </section>
+    </main>
   );
 }

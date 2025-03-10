@@ -10,15 +10,25 @@ import ListContainer from "./list-container";
 
 export default async function Blogs() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ["blogs", "infinite"],
-    queryFn: async () => {
-      const response = await getAll({ cursor: 0 });
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["blogs", "infinite", undefined],
+    queryFn: async ({ queryKey, pageParam }) => {
+      const [, , query] = queryKey;
+      const response = await getAll({ cursor: pageParam, query });
       if (response.error) {
         throw new Error(response.error.message);
       }
       return response.data;
     },
+    initialPageParam: 0,
+    getNextPageParam: (
+      lastPage:
+        | {
+            list: BlogPost[];
+            cursor: number;
+          }
+        | undefined
+    ) => lastPage?.cursor,
   });
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

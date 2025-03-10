@@ -10,15 +10,24 @@ import BlogContextProvider from "./context";
 
 export default async function Blogs() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ["users_blogs"],
-    queryFn: async () => {
-      const response = await get({ cursor: 0 });
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ["user_blogs", "infinite"],
+    queryFn: async ({ pageParam }) => {
+      const response = await get({ cursor: pageParam });
       if (response.error) {
         throw new Error(response.error.message);
       }
       return response.data;
     },
+    initialPageParam: 0,
+    getNextPageParam: (
+      lastPage:
+        | {
+            list: BlogPost[];
+            cursor: number;
+          }
+        | undefined
+    ) => lastPage?.cursor,
   });
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

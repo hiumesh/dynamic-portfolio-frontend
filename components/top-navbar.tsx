@@ -27,7 +27,7 @@ export default function TopNavbar({ user }: PropTypes) {
     <nav className="sticky top-0 z-30 shadow-md p-2 bg-black">
       <MaxWidthWrapper>
         <div className="flex justify-between items-center gap-5">
-          <div>
+          <Link href="/">
             <Image
               src="/logo.svg"
               alt="Logo"
@@ -35,7 +35,7 @@ export default function TopNavbar({ user }: PropTypes) {
               height={100}
               className="w-8 h-8"
             />
-          </div>
+          </Link>
           <div className="flex gap-4 items-center">
             {items.map((item) => (
               <Link

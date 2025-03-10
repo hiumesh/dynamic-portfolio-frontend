@@ -31,6 +31,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { showErrorToast } from "@/lib/client-utils";
+import { useRouter } from "next/navigation";
 
 let formSchema = z
   .object({
@@ -50,10 +51,10 @@ export default function SignInUI() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       setLoading(true);
-      const { error } = await signIn(data);
-      if (error) {
-        setLoading(false);
-        showErrorToast(error);
+      const result = await signIn(data);
+      setLoading(false);
+      if (result && "error" in result) {
+        showErrorToast(result.error, "Something went wrong! Failed to login");
       }
     } catch (error: any) {
       setLoading(false);
