@@ -1,7 +1,7 @@
 "use client";
 
 import MaxWidthWrapper from "@/components/max-width-wrapper";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import _ from "lodash";
 import { Search } from "lucide-react";
 import { useBlogsContext } from "./context";

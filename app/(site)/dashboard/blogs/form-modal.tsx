@@ -23,7 +23,7 @@ import {
   ModalFooter,
   ModalHeader,
   Spinner,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import MDEditor from "@uiw/react-md-editor";
 import { Upload } from "lucide-react";

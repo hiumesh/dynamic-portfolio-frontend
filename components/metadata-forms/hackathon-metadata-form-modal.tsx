@@ -22,7 +22,7 @@ import {
   ModalHeader,
   Spinner,
   Textarea,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";

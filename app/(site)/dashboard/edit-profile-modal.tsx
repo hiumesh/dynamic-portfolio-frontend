@@ -23,7 +23,7 @@ import {
   ModalFooter,
   ModalHeader,
   Textarea,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -273,7 +273,6 @@ export default function ProfileFormModal({
                                   {(wd) => (
                                     <AutocompleteItem
                                       key={wd.value}
-                                      value={wd.value}
                                       endContent={
                                         field?.value?.includes(wd.value) ? (
                                           <CheckIcon className="text-2xl text-black" />
@@ -389,7 +388,7 @@ export default function ProfileFormModal({
                                   (_, i) =>
                                     new Date().getFullYear() - 30 + i + ""
                                 ).map((year) => (
-                                  <AutocompleteItem key={year} value={year}>
+                                  <AutocompleteItem key={year}>
                                     {year}
                                   </AutocompleteItem>
                                 ))}
@@ -487,7 +486,7 @@ export default function ProfileFormModal({
                               (p) => !selectedSocialProfiles.includes(p.value)
                             )
                             .map((wd) => (
-                              <AutocompleteItem key={wd.value} value={wd.value}>
+                              <AutocompleteItem key={wd.value}>
                                 {wd.label}
                               </AutocompleteItem>
                             ))}

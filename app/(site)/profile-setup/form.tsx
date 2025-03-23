@@ -14,7 +14,7 @@ import { useAppContext } from "@/providers/app-context";
 import { profileSetup } from "@/services/api/users";
 import { CheckIcon } from "@/lib/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Autocomplete, AutocompleteItem, Chip, Input } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Chip, Input } from "@heroui/react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -170,7 +170,6 @@ export default function ProfileSetupForm() {
                       {workDomainOptions.map((wd) => (
                         <AutocompleteItem
                           key={wd.value}
-                          value={wd.value}
                           endContent={
                             field?.value?.includes(wd.value) ? (
                               <CheckIcon className="text-2xl text-black" />
@@ -234,9 +233,7 @@ export default function ProfileSetupForm() {
                       },
                       (_, i) => new Date().getFullYear() - 30 + i + ""
                     ).map((year) => (
-                      <AutocompleteItem key={year} value={year}>
-                        {year}
-                      </AutocompleteItem>
+                      <AutocompleteItem key={year}>{year}</AutocompleteItem>
                     ))}
                   </Autocomplete>
                   <FormMessage />

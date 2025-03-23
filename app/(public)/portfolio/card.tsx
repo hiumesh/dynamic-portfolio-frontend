@@ -11,7 +11,7 @@ import {
   Avatar,
   Chip,
   Skeleton,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Quote } from "lucide-react";
 import { useRouter } from "next/navigation";
 

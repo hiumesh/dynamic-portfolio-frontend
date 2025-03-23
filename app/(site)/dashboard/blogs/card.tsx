@@ -1,6 +1,6 @@
 import DeleteConfirmation from "@/components/delete-confirmation";
 import IconButton from "@/components/icon-button";
-import { Chip } from "@nextui-org/react";
+import { Chip } from "@heroui/react";
 import { Edit, Trash2 } from "lucide-react";
 import { DateFormatter } from "@internationalized/date";
 

@@ -15,7 +15,7 @@ import {
   DatePicker,
   Input,
   Textarea,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useAsyncList } from "@react-stately/data";
 import _ from "lodash";
 import { useCallback } from "react";
@@ -131,7 +131,7 @@ export default function CertificateFormFields({ form }: PropTypes) {
                 onInputChange={handleSkillsInputChange}
               >
                 {(skill) => (
-                  <AutocompleteItem key={skill.value} value={skill.value}>
+                  <AutocompleteItem key={skill.value}>
                     {skill.label}
                   </AutocompleteItem>
                 )}
@@ -167,7 +167,7 @@ export default function CertificateFormFields({ form }: PropTypes) {
                 <DatePicker
                   aria-label="Completion Date"
                   value={field.value ? parseDate(field.value) : null}
-                  onChange={(value) => field.onChange(value.toString())}
+                  onChange={(value) => field.onChange(value?.toString())}
                 />
               </FormControl>
 

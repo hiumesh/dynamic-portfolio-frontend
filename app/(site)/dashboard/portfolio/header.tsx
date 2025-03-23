@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { showErrorToast } from "@/lib/client-utils";
 import { get, publish, takedown } from "@/services/api/portfolio";
-import { Chip, Spinner } from "@nextui-org/react";
+import { Chip, Spinner } from "@heroui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import _ from "lodash";
 import { Loader2, SendHorizontal } from "lucide-react";

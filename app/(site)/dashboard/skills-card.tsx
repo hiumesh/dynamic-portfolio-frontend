@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useAppContext } from "@/providers/app-context";
-import { Chip } from "@nextui-org/react";
+import { Chip } from "@heroui/react";
 import SkillsFormModal from "./skills-form-modal";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";

@@ -14,7 +14,7 @@ import { useControllableState } from "@/hooks/use-controllable-state";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CircularProgress } from "@nextui-org/react";
+import { CircularProgress } from "@heroui/react";
 import { getPostPresignedUrl } from "@/services/api/user";
 import { showErrorToast } from "@/lib/client-utils";
 import { BUCKET_URL } from "@/lib/constants";

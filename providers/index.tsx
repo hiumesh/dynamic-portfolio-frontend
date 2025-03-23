@@ -1,4 +1,4 @@
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 
 import UseQueryProvider from "./use-query-provider";
 import AppContextProvider from "./app-context";
@@ -10,7 +10,7 @@ export default function GlobalProviders({
   children: React.ReactNode;
 }) {
   return (
-    <NextUIProvider>
+    <HeroUIProvider>
       <UseQueryProvider>
         <AppContextProvider>
           <>
@@ -19,6 +19,6 @@ export default function GlobalProviders({
           </>
         </AppContextProvider>
       </UseQueryProvider>
-    </NextUIProvider>
+    </HeroUIProvider>
   );
 }

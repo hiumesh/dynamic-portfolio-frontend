@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { get, remove } from "@/services/api/blog";
 
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { useEffect } from "react";
 import { showErrorToast } from "@/lib/client-utils";
 import { useInView } from "react-intersection-observer";

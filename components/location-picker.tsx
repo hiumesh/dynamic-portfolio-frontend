@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 // Import JSON data directly
 import countries from "@/data/countries.json";
 import states from "@/data/states.json";
-import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { useAsyncList } from "@react-stately/data";
 import { z } from "zod";
 
@@ -159,11 +159,7 @@ const LocationSelector = ({
         onInputChange={countriesList.setFilterText}
       >
         {(country) => (
-          <AutocompleteItem
-            key={country.id}
-            value={country.id}
-            textValue={country.name}
-          >
+          <AutocompleteItem key={country.id} textValue={country.name}>
             <div className="flex items-center gap-2">
               <span>{country.emoji}</span>
               <span>{country.name}</span>
@@ -187,11 +183,7 @@ const LocationSelector = ({
           onInputChange={statesList.setFilterText}
         >
           {(state) => (
-            <AutocompleteItem
-              key={state.id}
-              value={state.id}
-              textValue={state.name}
-            >
+            <AutocompleteItem key={state.id} textValue={state.name}>
               {state.name}
             </AutocompleteItem>
           )}

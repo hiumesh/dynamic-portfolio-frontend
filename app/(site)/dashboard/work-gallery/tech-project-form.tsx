@@ -25,7 +25,7 @@ import {
   ModalFooter,
   ModalHeader,
   Textarea,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -207,7 +207,7 @@ export default function TechProjectFormModal({
                                     field.value ? parseDate(field.value) : null
                                   }
                                   onChange={(value) =>
-                                    field.onChange(value.toString())
+                                    field.onChange(value?.toString())
                                   }
                                 />
                               </FormControl>
@@ -235,7 +235,7 @@ export default function TechProjectFormModal({
                                         : null
                                     }
                                     onChange={(value) =>
-                                      field.onChange(value.toString())
+                                      field.onChange(value?.toString())
                                     }
                                   />
                                 </FormControl>
@@ -338,10 +338,7 @@ export default function TechProjectFormModal({
                                 onInputChange={handleSkillsInputChange}
                               >
                                 {(skill) => (
-                                  <AutocompleteItem
-                                    key={skill.value}
-                                    value={skill.value}
-                                  >
+                                  <AutocompleteItem key={skill.value}>
                                     {skill.label}
                                   </AutocompleteItem>
                                 )}
@@ -474,7 +471,7 @@ export default function TechProjectFormModal({
                           }}
                         >
                           {linksOptions.map((wd) => (
-                            <AutocompleteItem key={wd.value} value={wd.value}>
+                            <AutocompleteItem key={wd.value}>
                               {wd.label}
                             </AutocompleteItem>
                           ))}

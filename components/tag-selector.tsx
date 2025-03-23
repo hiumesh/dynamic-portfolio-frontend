@@ -1,5 +1,5 @@
 import { useControllableState } from "@/hooks/use-controllable-state";
-import { Chip } from "@nextui-org/react";
+import { Chip } from "@heroui/react";
 import { useState } from "react";
 
 interface PropTypes {

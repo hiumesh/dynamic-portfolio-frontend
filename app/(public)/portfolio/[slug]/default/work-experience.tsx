@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import { useDateFormatter } from "@react-aria/i18n";
 import Link from "next/link";
 import { LinkIcon } from "lucide-react";
-import { Chip } from "@nextui-org/react";
+import { Chip } from "@heroui/react";
 
 export default function WorkExperienceSection() {
   const params = useParams<{ slug: string }>();

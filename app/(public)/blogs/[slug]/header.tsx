@@ -1,7 +1,7 @@
 "use client";
 
 import { getDetailBySlug } from "@/services/api/blog";
-import { Avatar, Chip } from "@nextui-org/react";
+import { Avatar, Chip } from "@heroui/react";
 import { useDateFormatter } from "@react-aria/i18n";
 import { useQuery } from "@tanstack/react-query";
 import { Dot } from "lucide-react";

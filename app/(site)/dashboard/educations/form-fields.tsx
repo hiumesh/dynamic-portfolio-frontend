@@ -8,12 +8,7 @@ import {
 } from "@/components/ui/form";
 import { degreeOptions } from "@/lib/select-options";
 import { educationFormSchema } from "@/lib/zod-schema";
-import {
-  Autocomplete,
-  AutocompleteItem,
-  Input,
-  Switch,
-} from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Input, Switch } from "@heroui/react";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
@@ -88,12 +83,8 @@ export default function EducationFormFields({ form }: PropTypes) {
                       else field.onChange(key);
                     }}
                   >
-                    <AutocompleteItem key={"X"} value={"X"}>
-                      Class X
-                    </AutocompleteItem>
-                    <AutocompleteItem key={"XII"} value={"XII"}>
-                      Class XII
-                    </AutocompleteItem>
+                    <AutocompleteItem key={"X"}>Class X</AutocompleteItem>
+                    <AutocompleteItem key={"XII"}>Class XII</AutocompleteItem>
                   </Autocomplete>
                   <FormMessage />
                 </FormItem>
@@ -128,9 +119,7 @@ export default function EducationFormFields({ form }: PropTypes) {
                       },
                       (_, i) => new Date().getFullYear() - 30 + i + ""
                     ).map((year) => (
-                      <AutocompleteItem key={year} value={year}>
-                        {year}
-                      </AutocompleteItem>
+                      <AutocompleteItem key={year}>{year}</AutocompleteItem>
                     ))}
                   </Autocomplete>
                   <FormMessage />
@@ -221,7 +210,7 @@ export default function EducationFormFields({ form }: PropTypes) {
                     }}
                   >
                     {degreeOptions.map((degree) => (
-                      <AutocompleteItem key={degree.value} value={degree.value}>
+                      <AutocompleteItem key={degree.value}>
                         {degree.label}
                       </AutocompleteItem>
                     ))}
@@ -279,9 +268,7 @@ export default function EducationFormFields({ form }: PropTypes) {
                       },
                       (_, i) => new Date().getFullYear() - 30 + i + ""
                     ).map((year) => (
-                      <AutocompleteItem key={year} value={year}>
-                        {year}
-                      </AutocompleteItem>
+                      <AutocompleteItem key={year}>{year}</AutocompleteItem>
                     ))}
                   </Autocomplete>
                   <FormMessage />
@@ -313,9 +300,7 @@ export default function EducationFormFields({ form }: PropTypes) {
                       },
                       (_, i) => new Date().getFullYear() - 30 + i + ""
                     ).map((year) => (
-                      <AutocompleteItem key={year} value={year}>
-                        {year}
-                      </AutocompleteItem>
+                      <AutocompleteItem key={year}>{year}</AutocompleteItem>
                     ))}
                   </Autocomplete>
                   <FormMessage />

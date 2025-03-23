@@ -20,7 +20,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useAsyncList } from "@react-stately/data";
 import _ from "lodash";
 import { useCallback, useEffect, useState } from "react";
@@ -172,10 +172,7 @@ export default function SkillsFormModal({
                               onInputChange={handleSkillsInputChange}
                             >
                               {(skill) => (
-                                <AutocompleteItem
-                                  key={skill.value}
-                                  value={skill.value}
-                                >
+                                <AutocompleteItem key={skill.value}>
                                   {skill.label}
                                 </AutocompleteItem>
                               )}

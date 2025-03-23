@@ -24,7 +24,7 @@ import Image from "next/image";
 import { BUCKET_URL } from "@/lib/constants";
 import { showErrorToast } from "@/lib/client-utils";
 import { Button } from "../ui/button";
-import { CircularProgress } from "@nextui-org/react";
+import { CircularProgress } from "@heroui/react";
 
 type DirectionOptions = "rtl" | "ltr" | undefined;
 

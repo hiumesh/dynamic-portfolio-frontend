@@ -18,7 +18,7 @@ import {
   DatePicker,
   Input,
   Textarea,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import _ from "lodash";
 import { X } from "lucide-react";
 import { DropzoneOptions } from "react-dropzone";
@@ -134,7 +134,7 @@ export default function HackathonFormFields({ form }: PropTypes) {
                 <DatePicker
                   aria-label="Start Date"
                   value={field.value ? parseDate(field.value) : null}
-                  onChange={(value) => field.onChange(value.toString())}
+                  onChange={(value) => field.onChange(value?.toString())}
                 />
               </FormControl>
 
@@ -153,7 +153,7 @@ export default function HackathonFormFields({ form }: PropTypes) {
                   <DatePicker
                     aria-label="End Date"
                     value={field.value ? parseDate(field.value) : null}
-                    onChange={(value) => field.onChange(value.toString())}
+                    onChange={(value) => field.onChange(value?.toString())}
                   />
                 </FormControl>
                 <FormMessage />
@@ -289,9 +289,7 @@ export default function HackathonFormFields({ form }: PropTypes) {
           }}
         >
           {linksOptions.map((wd) => (
-            <AutocompleteItem key={wd.value} value={wd.value}>
-              {wd.label}
-            </AutocompleteItem>
+            <AutocompleteItem key={wd.value}>{wd.label}</AutocompleteItem>
           ))}
         </Autocomplete>
       </div>

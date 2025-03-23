@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { get } from "@/services/api/portfolio";
-import { Chip, Spinner } from "@nextui-org/react";
+import { Chip, Spinner } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Edit3 } from "lucide-react";
 import { useState } from "react";

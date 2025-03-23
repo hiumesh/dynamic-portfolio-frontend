@@ -17,7 +17,7 @@ import {
   DatePicker,
   Input,
   Textarea,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useAsyncList } from "@react-stately/data";
 import _ from "lodash";
 import { useCallback } from "react";
@@ -85,9 +85,7 @@ export default function EducationFormFields({ form }: PropTypes) {
                 }}
               >
                 {jobTypeOptions.map((t) => (
-                  <AutocompleteItem key={t.value} value={t.value}>
-                    {t.label}
-                  </AutocompleteItem>
+                  <AutocompleteItem key={t.value}>{t.label}</AutocompleteItem>
                 ))}
               </Autocomplete>
               <FormMessage />
@@ -169,7 +167,7 @@ export default function EducationFormFields({ form }: PropTypes) {
                 <DatePicker
                   aria-label="Start Date"
                   value={field.value ? parseDate(field.value) : null}
-                  onChange={(value) => field.onChange(value.toString())}
+                  onChange={(value) => field.onChange(value?.toString())}
                 />
               </FormControl>
 
@@ -189,7 +187,7 @@ export default function EducationFormFields({ form }: PropTypes) {
                     isDisabled={currentlyWorkingHereCheck}
                     aria-label="End Date"
                     value={field.value ? parseDate(field.value) : null}
-                    onChange={(value) => field.onChange(value.toString())}
+                    onChange={(value) => field.onChange(value?.toString())}
                   />
                 </FormControl>
                 <FormMessage />
@@ -285,7 +283,7 @@ export default function EducationFormFields({ form }: PropTypes) {
                 onInputChange={handleSkillsInputChange}
               >
                 {(skill) => (
-                  <AutocompleteItem key={skill.value} value={skill.value}>
+                  <AutocompleteItem key={skill.value}>
                     {skill.label}
                   </AutocompleteItem>
                 )}

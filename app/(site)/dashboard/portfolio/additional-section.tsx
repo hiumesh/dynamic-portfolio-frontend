@@ -8,7 +8,7 @@ import { HackathonMetaDataFormModal } from "@/components/metadata-forms/hackatho
 import { WorkGalleryMetaDataFormModal } from "@/components/metadata-forms/work-gallery-metadata-form-modal";
 import { Button } from "@/components/ui/button";
 import { get } from "@/services/api/portfolio";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowUpRight, Edit3 } from "lucide-react";
 import Link from "next/link";

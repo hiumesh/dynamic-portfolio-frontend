@@ -2,7 +2,7 @@
 
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { getBySlug } from "@/services/api/portfolio";
-import { Chip } from "@nextui-org/react";
+import { Chip } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 

@@ -11,7 +11,7 @@ import {
   Avatar,
   Chip,
   Skeleton,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useDateFormatter } from "@react-aria/i18n";
 import { useRouter } from "next/navigation";
 
