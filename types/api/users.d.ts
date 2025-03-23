@@ -7,6 +7,8 @@ interface UserProfile {
   status: string;
   attributes: null | {
     college?: string;
+    about?: string;
+    tagline?: string;
     graduation_year?: string;
     work_domains?: string[];
     social_profiles?: { platform: string; url: string }[];

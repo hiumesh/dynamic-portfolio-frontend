@@ -7,3 +7,10 @@ interface ServerActionResponse<T> {
   data?: T;
   error?: ServerActionError;
 }
+
+type MarginValue = `${number}${"px" | "%"}`;
+type MarginType =
+  | MarginValue
+  | `${MarginValue} ${MarginValue}`
+  | `${MarginValue} ${MarginValue} ${MarginValue}`
+  | `${MarginValue} ${MarginValue} ${MarginValue} ${MarginValue}`;

@@ -1,7 +1,3 @@
-import ProfileCard from "./profile-card";
-import SkillsCard from "./skills-card";
-// import TabContainer from "./tab-container";
-
 export default function Dashobard() {
   return (
     <main className="flex justify-center">
