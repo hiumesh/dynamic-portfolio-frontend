@@ -6,24 +6,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { jobTypeOptions } from "@/lib/select-options";
-import { cn } from "@/lib/utils";
 import { workExperienceFormSchema } from "@/lib/zod-schema";
 import { getSkills } from "@/services/skills-api";
 import { parseDate } from "@internationalized/date";
 import {
   Autocomplete,
   AutocompleteItem,
-  Button,
   Checkbox,
   Chip,
   DatePicker,
   Input,
+  Textarea,
 } from "@nextui-org/react";
 import { useAsyncList } from "@react-stately/data";
 import _ from "lodash";
-import { X } from "lucide-react";
 import { useCallback } from "react";
-import { useFieldArray, UseFormReturn } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
 interface PropTypes {
@@ -31,11 +29,6 @@ interface PropTypes {
 }
 
 export default function EducationFormFields({ form }: PropTypes) {
-  const descriptionFormField = useFieldArray({
-    control: form.control,
-    name: "description",
-  });
-
   const skillsList = useAsyncList<string>({
     async load({ signal, filterText }) {
       const items = await getSkills({ q: filterText });
@@ -227,58 +220,27 @@ export default function EducationFormFields({ form }: PropTypes) {
           />
         </div>
       </div>
-      <div className="space-y-2">
-        {descriptionFormField.fields.map((f, index) => (
-          <div key={f.id}>
-            <FormField
-              control={form.control}
-              name={`description.${index}.item`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className={cn(index !== 0 && "sr-only")}>
-                    Description (Answer below questions to describe your work
-                    properly)
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      value={field.value || ""}
-                      onChange={(e) =>
-                        field.onChange(e.target.value || undefined)
-                      }
-                      placeholder="Description..."
-                      endContent={
-                        index < 3 ? undefined : (
-                          <Button
-                            isIconOnly
-                            variant="light"
-                            className="min-w-min w-5 h-5"
-                            onClick={() => {
-                              descriptionFormField.remove(index);
-                            }}
-                          >
-                            <X className="w-4 h-4 text-gray-500" />
-                          </Button>
-                        )
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        ))}
-        <FormMessage>
-          {form?.formState?.errors?.description?.root?.message}
-        </FormMessage>
-        <Button
-          type="button"
-          variant="bordered"
-          onClick={() => descriptionFormField.append({ item: undefined })}
-        >
-          Add Items
-        </Button>
+      <div>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="flex flex-col space-y-1.5 flex-1">
+              <FormLabel className="font-normal">Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  value={field.value || ""}
+                  minRows={4}
+                  onChange={(e) => field.onChange(e.target.value || undefined)}
+                  placeholder="Description..."
+                  aria-label="Description"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
       <div className="flex gap-4 items-start">
         <FormField

@@ -68,7 +68,7 @@ interface UserWorkExperience {
   location: string;
   start_date: string;
   end_date?: string;
-  description: string[];
+  description: string;
   skills_used: string[];
   certificate_link?: string;
 }
@@ -79,7 +79,7 @@ interface UserCertification {
   id: number;
   order_index: number;
   title: string;
-  description: string[];
+  description: string;
   completion_date: string;
   certificate_link?: string;
   skills_used: string[];

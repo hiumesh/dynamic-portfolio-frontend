@@ -367,36 +367,9 @@ export const workExperienceFormSchema = z
       .optional(),
     currently_working: z.boolean().optional(),
     description: z
-      .array(
-        z.object({
-          item: z.string().optional(),
-        })
-      )
-      .transform((array) =>
-        array.filter(({ item }) => item && item.trim() !== "")
-      )
-      .refine((filteredArray) => filteredArray.length >= 3, {
-        message: "The description must have at least 3 valid lines.",
-      })
-      .superRefine((array, ctx) => {
-        array.forEach(({ item }, index) => {
-          if (item) {
-            const validation = z
-              .string()
-              .trim()
-              .min(5, { message: "Item must be at least 5 characters long" })
-              .max(100, { message: "Item must be at most 100 characters long" })
-              .safeParse(item);
-            if (!validation.success) {
-              ctx.addIssue({
-                path: [index, "item"],
-                code: z.ZodIssueCode.custom,
-                message: validation.error.issues[0].message,
-              });
-            }
-          }
-        });
-      }),
+      .string()
+      .trim()
+      .min(10, { message: "Description is required" }),
     skills_used: z
       .array(z.string().trim().min(1, { message: "Skill is required" }))
       .min(3, { message: "At least three skills is required" }),
@@ -436,36 +409,9 @@ export const certificateFormSchema = z
       }),
 
     description: z
-      .array(
-        z.object({
-          item: z.string().optional(),
-        })
-      )
-      .transform((array) =>
-        array.filter(({ item }) => item && item.trim() !== "")
-      )
-      .refine((filteredArray) => filteredArray.length >= 1, {
-        message: "The description must have at least 1 valid lines.",
-      })
-      .superRefine((array, ctx) => {
-        array.forEach(({ item }, index) => {
-          if (item) {
-            const validation = z
-              .string()
-              .trim()
-              .min(5, { message: "Item must be at least 5 characters long" })
-              .max(100, { message: "Item must be at most 100 characters long" })
-              .safeParse(item);
-            if (!validation.success) {
-              ctx.addIssue({
-                path: [index, "item"],
-                code: z.ZodIssueCode.custom,
-                message: validation.error.issues[0].message,
-              });
-            }
-          }
-        });
-      }),
+      .string()
+      .trim()
+      .min(10, { message: "Description is required" }),
 
     completion_date: z
       .string()

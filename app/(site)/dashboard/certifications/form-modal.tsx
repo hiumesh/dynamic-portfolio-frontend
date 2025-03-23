@@ -37,13 +37,7 @@ export default function CertificateFormModal({
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof certificateFormSchema>>({
-    defaultValues: {
-      description: [
-        {
-          item: undefined,
-        },
-      ],
-    },
+    defaultValues: {},
     resolver: zodResolver(certificateFormSchema),
   });
 
@@ -54,7 +48,6 @@ export default function CertificateFormModal({
 
       const body = {
         ...data,
-        description: data?.description?.map((item) => item.item),
       };
 
       if (editData) response = await updateUserCertification(editData.id, body);
@@ -83,10 +76,7 @@ export default function CertificateFormModal({
       form.reset();
       form.setValue("title", editData.title);
       form.setValue("completion_date", editData.completion_date.slice(0, 10));
-      form.setValue(
-        "description",
-        editData.description.map((item) => ({ item }))
-      );
+      form.setValue("description", editData.description);
       form.setValue("skills_used", editData.skills_used);
       form.setValue("certificate_link", editData.certificate_link);
     } else form.reset();

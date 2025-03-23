@@ -37,9 +37,7 @@ export default function ExperienceFormModal({
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof workExperienceFormSchema>>({
-    defaultValues: {
-      description: [{}, {}, {}],
-    },
+    defaultValues: {},
     resolver: zodResolver(workExperienceFormSchema),
   });
 
@@ -50,7 +48,6 @@ export default function ExperienceFormModal({
 
       const body = {
         ...data,
-        description: data?.description?.map((item) => item.item),
       };
       if (editData)
         response = await updateUserWorkExperience(editData.id, body);
@@ -88,10 +85,7 @@ export default function ExperienceFormModal({
         editData.end_date ? editData.end_date.slice(0, 10) : undefined
       );
       form.setValue("currently_working", typeof editData.end_date != "string");
-      form.setValue(
-        "description",
-        editData.description.map((item) => ({ item }))
-      );
+      form.setValue("description", editData.description);
       form.setValue("skills_used", editData.skills_used);
       form.setValue("certificate_link", editData.certificate_link);
     } else form.reset();
