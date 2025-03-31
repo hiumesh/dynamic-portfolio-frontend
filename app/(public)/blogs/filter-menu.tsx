@@ -14,7 +14,10 @@ export default function FilterMenu() {
   }, 500);
 
   return (
-    <MaxWidthWrapper className="sticky top-12 z-20 bg-background py-3 mb-3">
+    <MaxWidthWrapper
+      className="py-3 mb-3"
+      outerClassName="sticky top-12 z-20 bg-background"
+    >
       <div>
         <Input
           className="max-w-xs"

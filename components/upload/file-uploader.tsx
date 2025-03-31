@@ -646,7 +646,7 @@ function FileTileCard({ file, progress, onRemove }: FileCardProps) {
     return (
       <div
         className={cn(
-          "relative group h-28 w-28 grid place-items-center  rounded-lg border-[1.4px] border-dashed border-muted-foreground/25 p-2 text-center transition hover:bg-muted/25 bg-muted",
+          "relative group h-28 w-28 place-items-center  rounded-lg border-[1.4px] border-dashed border-muted-foreground/25 p-2 text-center transition hover:bg-muted/25 bg-muted",
           file.status === "error" && "border-red-500"
         )}
       >
@@ -692,14 +692,15 @@ function FileTileCard({ file, progress, onRemove }: FileCardProps) {
   return (
     <div
       className={cn(
-        "relative group h-28 w-28 grid place-items-center  rounded-lg border-[1.4px] border-dashed border-muted-foreground/25 p-2 text-center transition hover:bg-muted/25 bg-muted",
+        "relative group h-28 w-28   rounded-lg border-[1.4px] border-dashed border-muted-foreground/25 p-2 text-center transition hover:bg-muted/25 bg-muted",
         file.status === "error" && "border-red-500"
       )}
     >
       <div className="w-full h-full relative">
-        <div className="flex flex-col h-full items-center justify-center gap-2 text-gray-700 text-xs">
+        <div className="flex flex-col h-full items-center justify-center gap-2 text-gray-700 text-xs text-wrap">
           <File />
-          {file.name}
+          <p className="w-full break-words line-clamp-3">{file.name}</p>
+
           {file.status === "uploading" ? (
             <CircularProgress
               aria-label="File upload progress"
@@ -733,7 +734,7 @@ function FileTileCard({ file, progress, onRemove }: FileCardProps) {
 function FileCard({ file, progress, onRemove }: FileCardProps) {
   return (
     <div className="relative flex items-center gap-2.5">
-      <div className="flex flex-1 gap-2.5">
+      <div className="flex flex-1 gap-2.5 relative overflow-hidden h-full">
         {isFileWithPreview(file) ? <FilePreview file={file} /> : null}
         <div className="flex w-full flex-col gap-2">
           <div className="flex flex-col gap-px">

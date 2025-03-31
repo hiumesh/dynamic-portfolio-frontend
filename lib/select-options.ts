@@ -184,3 +184,9 @@ export const linksOptions = [
   { label: "Github", value: "Github" },
   { label: "Website", value: "Website" },
 ];
+
+export const techProjectLinkOptions = [
+  { label: "Demo", value: "Demo" },
+  { label: "Source Code", value: "SourceCode" },
+  { label: "Website", value: "Website" },
+];

@@ -3,13 +3,59 @@
 import { REST_URL } from "@/lib/constants";
 import { fetchWithAuth, processFetchResponse } from "@/lib/server-utils";
 
-export async function findAll() {
-  const response = await fetchWithAuth(`${REST_URL}/work-gallery`, {
+export async function getAll({
+  cursor,
+  query,
+}: {
+  cursor?: string | number;
+  query?: string;
+}) {
+  const queryParams = [];
+  if (cursor) queryParams.push(`cursor=${cursor}`);
+  if (query) queryParams.push(`query=${query}`);
+  const response = await fetchWithAuth(
+    `${REST_URL}/work-gallery?${queryParams.join("&")}`,
+    {
+      cache: "no-store",
+    },
+    { continueIfNotAuthenticated: true }
+  );
+
+  return processFetchResponse<{ list: WorkGalleryItems; cursor: number }>(
+    response
+  );
+}
+
+export async function get({
+  cursor,
+  query,
+}: {
+  cursor?: string | number;
+  query?: string;
+}) {
+  const queryParams = [];
+  if (cursor) queryParams.push(`cursor=${cursor}`);
+  if (query) queryParams.push(`query=${query}`);
+  const response = await fetchWithAuth(
+    `${REST_URL}/work-gallery/user?${queryParams.join("&")}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  return processFetchResponse<{ list: WorkGalleryItems; cursor: number }>(
+    response
+  );
+}
+
+export async function getDetail(id: string | number) {
+  const response = await fetchWithAuth(`${REST_URL}/work-gallery/user/${id}`, {
     cache: "no-store",
   });
 
-  return processFetchResponse<WorkGalleryItems>(response);
+  return processFetchResponse<WorkGalleryItem>(response);
 }
+
 export async function create(body: any) {
   const response = await fetchWithAuth(`${REST_URL}/work-gallery`, {
     cache: "no-store",

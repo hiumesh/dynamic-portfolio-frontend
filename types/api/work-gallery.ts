@@ -3,16 +3,22 @@ interface TechProject {
   order_index: number;
   title: string;
   description: string;
-  start_date: string;
-  end_date?: string;
-  skills_used: string[];
-  attributes: null | {
-    links: {
-      platform: string;
-      label: string;
-      url: string;
-    }[];
-  };
+  tech_used: string[];
+  publisher_id: string;
+  publisher_avatar: string;
+  publisher_name: string;
+  // attributes: null | {
+  //   links: {
+  //     platform: string;
+  //     label: string;
+  //     url: string;
+  //   }[];
+  // };
+  links: {
+    platform: string;
+    label: string;
+    url: string;
+  }[];
   attachments: {
     id: number;
     file_name: string;

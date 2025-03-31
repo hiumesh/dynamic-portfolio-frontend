@@ -596,59 +596,13 @@ export const techProjectFormSchema = z
         message:
           "Project name must only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
       }),
-    start_date: z
-      .string()
-      .trim()
-      .refine((value) => !isNaN(Date.parse(value)), {
-        message: "Start date must be a valid ISO date",
-      })
-      .refine(
-        (value) => {
-          const date = new Date(value);
-          const currentYear = new Date().getFullYear();
-          return (
-            date.getFullYear() >= 1900 && date.getFullYear() <= currentYear + 6
-          );
-        },
-        {
-          message: `Start date must be between the year 1900 and ${
-            new Date().getFullYear() + 6
-          }`,
-        }
-      ),
-    end_date: z
-      .string()
-      .trim()
-      .refine(
-        (value) => !value || !isNaN(Date.parse(value)), // Allow empty value (optional field)
-        {
-          message: "End date must be a valid ISO date",
-        }
-      )
-      .refine(
-        (value) => {
-          if (!value) return true; // Skip further checks if the value is empty
-          const date = new Date(value);
-          const currentYear = new Date().getFullYear();
-          return (
-            date.getFullYear() >= 1900 && date.getFullYear() <= currentYear + 6
-          );
-        },
-        {
-          message: `End date must be between the year 1900 and ${
-            new Date().getFullYear() + 6
-          }`,
-        }
-      )
-      .optional(),
-    currently_working: z.boolean().optional(),
     description: z
       .string()
       .trim()
       .min(10, { message: "Description is required" }),
-    skills_used: z
-      .array(z.string().trim().min(1, { message: "Skill is required" }))
-      .min(3, { message: "At least three skills is required" }),
+    tech_used: z
+      .array(z.string().trim().min(1, { message: "Tech stack is required" }))
+      .min(3, { message: "At least three technologies used is required" }),
     links: z
       .array(
         z.object({
@@ -697,16 +651,7 @@ export const techProjectFormSchema = z
       )
       .optional(),
   })
-  .strict()
-  .superRefine((data, ctx) => {
-    if (!data.end_date && !data.currently_working) {
-      ctx.addIssue({
-        path: ["end_date"],
-        code: z.ZodIssueCode.custom,
-        message: "End date is required",
-      });
-    }
-  });
+  .strict();
 
 export const workGalleryMetadataFormSchema = z
   .object({

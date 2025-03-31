@@ -100,7 +100,7 @@ export default function DashboardTabSortableList({
     <div>
       <Sortable
         strategy={verticalListSortingStrategy}
-        items={list.map((edu) => edu.id)}
+        items={list.map((i) => i.id)}
         setOriginalItems={setList}
         itemsMap={listMap}
         renderItem={renderItem}

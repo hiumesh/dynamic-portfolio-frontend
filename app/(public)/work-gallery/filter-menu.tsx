@@ -4,10 +4,10 @@ import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Input } from "@heroui/react";
 import _ from "lodash";
 import { Search } from "lucide-react";
-import { usePortfolioContext } from "./context";
+import { useWorkGalleryContext } from "./context";
 
 export default function FilterMenu() {
-  const { updateFilters } = usePortfolioContext();
+  const { updateFilters } = useWorkGalleryContext();
 
   const handleInputChange = _.debounce((value?: string) => {
     updateFilters({ query: value }, { merge: true });

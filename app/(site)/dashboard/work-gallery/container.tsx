@@ -1,45 +1,115 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useOptimistic,
+  useState,
+} from "react";
 import { showErrorToast } from "@/lib/client-utils";
 import DashboardTabSortableList, {
   SortableListItem,
 } from "@/components/dashboard-tab-sortable-list";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Edit3, Plus } from "lucide-react";
-import TechProjectCard from "./tech-project-card";
-import TechProjectFormModal from "./tech-project-form";
-import { remove, reorder } from "@/services/api/work-gallery";
-import { WorkGalleryMetaDataFormModal } from "@/components/metadata-forms/work-gallery-metadata-form-modal";
 
-interface PropTypes {
-  items: WorkGalleryItems;
-}
+import { TechProjectCard } from "./card";
+import { get, remove, reorder } from "@/services/api/work-gallery";
 
-export default function WorkGalleryContainer({ items }: PropTypes) {
-  const [form, setForm] = useState<{
-    isOpen: boolean;
-    editData: WorkGalleryItem | null;
-  }>({ isOpen: false, editData: null });
-  const [metadataFormModal, setMetadataFormModal] = useState(false);
-  const [data, setData] = useState(items);
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
+import { useWorkGalleryContext } from "./context";
+import { Spinner } from "@heroui/react";
+import _ from "lodash";
 
-  const onRemove = useCallback(async (id: number | string) => {
-    try {
-      const { error } = await remove(id);
-      if (error) {
+export default function WorkGalleryContainer() {
+  const { showWorkGalleryForm } = useWorkGalleryContext();
+  const [ref, inView] = useInView();
+  const queryClient = useQueryClient();
+  const {
+    data,
+    error,
+    isFetching,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["user_work_gallery", "infinite"],
+    queryFn: async ({ pageParam }) => {
+      const response = await get({ cursor: pageParam });
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+
+      return response.data;
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage?.cursor,
+    refetchOnWindowFocus: false,
+    structuralSharing: false,
+  });
+
+  const [items, setItems] = useState<TechProject[]>([]);
+
+  // const items = useMemo(() => {
+  //   // console.log("running", data);
+  //   return data?.pages?.flatMap((page) => page?.list || []) || [];
+  // }, [data]);
+
+  // const [optimisticItems, setOptimisticItems] = useOptimistic(
+  //   items,
+  //   (state, action: any) => {
+  //     switch (action.type) {
+  //       case "reorder": {
+  //         return action.func(state);
+  //       }
+
+  //       default: {
+  //         return state;
+  //       }
+  //     }
+  //   }
+  // );
+
+  const onRemove = useCallback(
+    async (id: number | string) => {
+      try {
+        const { error } = await remove(id);
+        if (error) {
+          showErrorToast(error);
+          return false;
+        }
+        queryClient.setQueryData(
+          ["user_work_gallery", "infinite"],
+          (prev: unknown) => {
+            if (
+              typeof prev === "object" &&
+              prev !== null &&
+              "pages" in prev &&
+              _.isArray(prev?.pages)
+            ) {
+              let list = prev?.pages?.flatMap((page) => page?.list || []) || [];
+              list = list.filter((item) => item.id !== id);
+
+              return {
+                ...prev,
+                pages: prev?.pages?.map((page) => ({
+                  ...page,
+                  list: list?.splice(0, page?.list?.length),
+                })),
+              };
+            }
+            return prev;
+          }
+        );
+        return true;
+      } catch (error) {
         showErrorToast(error);
         return false;
       }
-      setData((prev) => prev.filter((ha) => ha.id !== id));
-      return true;
-    } catch (error) {
-      showErrorToast(error);
-      return false;
-    }
-  }, []);
+    },
+    [queryClient]
+  );
 
   const onReorder = useCallback(
     async (id: number | string, newIndex: number) => {
@@ -58,65 +128,126 @@ export default function WorkGalleryContainer({ items }: PropTypes) {
     []
   );
 
-  const onEdit = useCallback((data: WorkGalleryItem) => {
-    setForm({ isOpen: true, editData: data });
-  }, []);
+  const onSuccess = useCallback(
+    (data?: WorkGalleryItem) => {
+      if (data) {
+        queryClient.setQueryData(
+          ["user_work_gallery", "infinite"],
+          (prev: unknown) => {
+            if (
+              typeof prev === "object" &&
+              prev !== null &&
+              "pages" in prev &&
+              _.isArray(prev?.pages)
+            ) {
+              let list = prev?.pages?.flatMap((page) => page?.list || []) || [];
+              const index = list.findIndex((exp) => exp.id === data.id);
+              if (index === -1) return prev;
+              list = [...list.slice(0, index), data, ...list.slice(index + 1)];
 
-  const onSuccess = useCallback((data?: WorkGalleryItem) => {
+              return {
+                ...prev,
+                pages: prev?.pages?.map((page) => ({
+                  ...page,
+                  list: list?.splice(0, page?.list?.length),
+                })),
+              };
+            }
+            return prev;
+          }
+        );
+      }
+    },
+    [queryClient]
+  );
+
+  const onEdit = useCallback(
+    (data: WorkGalleryItem) => {
+      showWorkGalleryForm(data.id, onSuccess);
+    },
+    [showWorkGalleryForm, onSuccess]
+  );
+
+  useEffect(() => {
     if (data) {
-      setData((prev) => {
-        const index = prev.findIndex((exp) => exp.id === data.id);
-        if (index === -1) return [data, ...prev];
-        return [...prev.slice(0, index), data, ...prev.slice(index + 1)];
-      });
+      setItems(data?.pages?.flatMap((page) => page?.list || []) || []);
     }
-  }, []);
+  }, [data]);
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, inView]);
+
+  const handleListChange = (
+    sortItems: (list: SortableListItem[]) => SortableListItem[]
+  ) => {
+    // startTransition(() => {
+    //    setOptimisticItems({ type: "reorder", func: sortItems });
+    // });
+    setItems((prev) => sortItems([...prev]) as TechProject[]);
+
+    queryClient.setQueryData(
+      ["user_work_gallery", "infinite"],
+      (prev: unknown) => {
+        if (
+          typeof prev === "object" &&
+          prev !== null &&
+          "pages" in prev &&
+          _.isArray(prev?.pages)
+        ) {
+          let list = prev?.pages?.flatMap((page) => page?.list || []) || [];
+          list = sortItems(list);
+
+          return {
+            ...prev,
+            pages: prev?.pages?.map((page) => ({
+              ...page,
+              list: list?.splice(0, page?.list?.length),
+            })),
+          };
+        }
+        return prev;
+      }
+    );
+  };
+
+  if (error) return <div>Something went wrong</div>;
 
   return (
-    <>
-      <header className="flex py-1.5 shrink-0 items-center justify-between border-b px-4 gap-2 mb-3 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-        <div className="flex items-center gap-2">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-6" />
-          <h1 className="text-lg">Work Gallery</h1>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button
-            className="h-min px-3 py-1.5 gap-1 rounded-full font-normal text-xs"
-            onClick={() => setMetadataFormModal(true)}
+    <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <DashboardTabSortableList
+        // list={optimisticItems}
+        list={items}
+        setList={
+          handleListChange as React.Dispatch<
+            React.SetStateAction<SortableListItem[]>
           >
-            <Edit3 /> Edit Meta
-          </Button>
-          <Button
-            className="h-min px-3 py-1.5 gap-1 rounded-full font-normal text-xs"
-            onClick={() => setForm({ ...form, isOpen: true, editData: null })}
-          >
-            <Plus /> Add New
-          </Button>
+        }
+        onRemove={onRemove}
+        onReorder={onReorder}
+        onEdit={onEdit as (data: SortableListItem) => void}
+        Card={TechProjectCard}
+      />
+      {isFetching || isFetchingNextPage ? (
+        <div className="flex flex-col space-y-2 items-center justify-center py-10">
+          <Spinner size="sm" />
+          <p className="text-sm">Loading...</p>
         </div>
-      </header>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <DashboardTabSortableList
-          list={data}
-          setList={
-            setData as React.Dispatch<React.SetStateAction<SortableListItem[]>>
-          }
-          onRemove={onRemove}
-          onReorder={onReorder}
-          onEdit={onEdit as (data: SortableListItem) => void}
-          Card={TechProjectCard}
-        />
+      ) : null}
+      <div>
+        <div
+          ref={ref}
+          className="text-center text-sm text-muted-foreground py-7 invisible"
+        >
+          {isFetchingNextPage
+            ? "Fetching next page..."
+            : hasNextPage
+            ? "Fetch More Data"
+            : "No more data"}
+        </div>
       </div>
-      <TechProjectFormModal
-        hide={() => setForm({ ...form, isOpen: false })}
-        editData={form.editData}
-        onSuccess={onSuccess}
-        isOpen={form.isOpen}
-      />
-      <WorkGalleryMetaDataFormModal
-        hide={() => setMetadataFormModal(false)}
-        isOpen={metadataFormModal}
-      />
-    </>
+    </div>
   );
 }

@@ -12,7 +12,7 @@ interface PropTypes {
   listeners?: DraggableSyntheticListeners;
 }
 
-export default function TechProjectCard({
+export function TechProjectCard({
   data,
   onEdit,
   onRemove,

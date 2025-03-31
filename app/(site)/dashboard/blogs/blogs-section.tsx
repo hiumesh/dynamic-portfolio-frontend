@@ -47,7 +47,7 @@ export default function BlogsSection() {
       return id;
     },
     onSuccess: (id) => {
-      queryClient.setQueryData(["users_blogs"], (prev: any) => {
+      queryClient.setQueryData(["users_blogs", "infinite"], (prev: any) => {
         if (prev && typeof prev === "object" && prev.length)
           return prev.filter((item: any) => item.id !== id);
         return prev;

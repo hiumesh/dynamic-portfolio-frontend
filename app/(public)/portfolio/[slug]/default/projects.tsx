@@ -63,7 +63,7 @@ function ProjectCard({ data }: { data: WorkGalleryItem }) {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {data.skills_used?.map((skill, id) => (
+          {data.tech_used?.map((skill, id) => (
             <Chip key={skill} variant="solid" color="primary" size="sm">
               {skill}
             </Chip>
@@ -71,17 +71,8 @@ function ProjectCard({ data }: { data: WorkGalleryItem }) {
         </div>
       </div>
       <div className="text-right">
-        <p className="text-sm text-gray-500">
-          <span>{formatter.format(new Date(data.start_date))}</span>
-          <span className="mx-2">-</span>
-          <span>
-            {data.end_date
-              ? formatter.format(new Date(data.end_date))
-              : "Present"}
-          </span>
-        </p>
         <div className="flex flex-wrap gap-2">
-          {data.attributes?.links?.map((link, id) => (
+          {data?.links?.map((link, id) => (
             <Link href={link.url} key={link.url}>
               <Chip
                 startContent={
