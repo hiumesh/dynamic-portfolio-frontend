@@ -23,7 +23,7 @@ export default function PortfolioCard({ data }: { data: PortfolioListItem }) {
       isHoverable
       isPressable
       onPress={() => {
-        router.push(`/portfolio/${data.slug}/default`);
+        router.push(`/portfolio/${data.slug}/white`);
       }}
     >
       <CardHeader className="flex gap-3">

@@ -45,7 +45,7 @@ export default function SkillsSection() {
       <div className="flex flex-wrap gap-2 p-2">
         {skills?.map((skill) => (
           <Chip
-            key={skill.id}
+            key={skill.name}
             variant="solid"
             color="secondary"
             size="lg"
