@@ -13,8 +13,10 @@ export const educationFormSchema = z
       .string()
       .trim()
       .min(6, { message: "Institute name must be at least 6 characters long" })
-      .max(50, { message: "Institute name must be at most 50 characters long" })
-      .regex(alphaRegex, {
+      .max(100, {
+        message: "Institute name must be at most 50 characters long",
+      })
+      .regex(alphaNumericRegex, {
         message:
           "Institute name must only contain alphabetic characters and spaces",
       }),
@@ -27,23 +29,41 @@ export const educationFormSchema = z
     field_of_study: z
       .string()
       .trim()
-      .min(8, { message: "Field of Study must be at least 8 characters long" })
-      .max(100, {
-        message: "Field of Study name must be at most 100 characters long",
-      })
-      .regex(alphaNumericRegex, {
-        message:
-          "Field of Study name must only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
-      }),
+      .refine(
+        (value) => {
+          if (!value) return true;
+          else if (
+            z.string().min(2).max(100).regex(alphaNumericRegex).safeParse(value)
+              .success
+          )
+            return true;
+          else return false;
+        },
+        {
+          message:
+            "Field of Study is required and must be between 8 and 100 characters long and only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
+        }
+      )
+      .transform((value) => (value ? value : undefined)),
     degree: z
       .string()
       .trim()
-      .min(2, { message: "Degree must be at least 2 characters long" })
-      .max(100, { message: "Degree must be at most 100 characters long" })
-      .regex(alphaNumericRegex, {
-        message:
-          "Field of Study name must only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
-      }),
+      .refine(
+        (value) => {
+          if (!value) return true;
+          else if (
+            z.string().min(2).max(100).regex(alphaNumericRegex).safeParse(value)
+              .success
+          )
+            return true;
+          else return false;
+        },
+        {
+          message:
+            "Degree is required and must be between 2 and 100 characters long and only contain letters, numbers, spaces, and basic punctuation (e.g., hyphens, commas, periods)",
+        }
+      )
+      .transform((value) => (value ? value : undefined)),
     start_year: z
       .string()
       .trim()

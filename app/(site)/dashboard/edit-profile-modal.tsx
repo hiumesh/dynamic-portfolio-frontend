@@ -119,7 +119,14 @@ export default function ProfileFormModal({
         profile_picture: data?.profile_picture?.url,
       };
 
-      await updateProfile(body);
+      const { error } = await updateProfile(body);
+
+      if (error) {
+        form.setError("root", { message: error.message });
+        setLoading(false);
+        showErrorToast(error, "There was a problem with your request.");
+        return;
+      }
       onSuccess?.();
       hide();
       setLoading(false);

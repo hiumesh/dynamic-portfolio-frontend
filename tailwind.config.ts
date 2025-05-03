@@ -103,7 +103,11 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), heroui()],
+  plugins: [
+    require("tailwindcss-animate"),
+    heroui(),
+    require("@tailwindcss/typography"),
+  ],
 } satisfies Config;
 
 export default config;

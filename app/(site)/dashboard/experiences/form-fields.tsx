@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/form";
 import { jobTypeOptions } from "@/lib/select-options";
 import { workExperienceFormSchema } from "@/lib/zod-schema";
-import { getSkills } from "@/services/skills-api";
 import { parseDate } from "@internationalized/date";
 import {
   Autocomplete,
@@ -23,6 +22,7 @@ import _ from "lodash";
 import { useCallback } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
+import { getSkills } from "@/services/api/metadata";
 
 interface PropTypes {
   form: UseFormReturn<z.infer<typeof workExperienceFormSchema>>;
@@ -31,9 +31,14 @@ interface PropTypes {
 export default function EducationFormFields({ form }: PropTypes) {
   const skillsList = useAsyncList<string>({
     async load({ signal, filterText }) {
-      const items = await getSkills({ q: filterText });
+      const { data, error } = await getSkills({ query: filterText });
+      if (error) {
+        return {
+          items: [],
+        };
+      }
       return {
-        items,
+        items: data?.list?.map((item) => item.name) || [],
       };
     },
   });

@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { showErrorToast } from "@/lib/client-utils";
+import { useRouter } from "next/navigation";
 
 const alphaRegex = /^[a-zA-Z\s]+$/; // Allows only letters and spaces
 const alphaNumericRegex = /^[a-zA-Z0-9\s\-,.]+$/; // Allows letters, numbers, spaces, hyphens, commas, and periods
@@ -73,6 +74,7 @@ const formSchema = z
 export default function ProfileSetupForm() {
   const [loading, setLoading] = useState(false);
   const { refreshProfile } = useAppContext();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
@@ -92,7 +94,8 @@ export default function ProfileSetupForm() {
         throw new Error(response.error.message);
       }
       await refreshProfile();
-      // setLoading(false);
+      setLoading(false);
+      router.replace("/dashboard");
     } catch (error: any) {
       setLoading(false);
       showErrorToast(error);

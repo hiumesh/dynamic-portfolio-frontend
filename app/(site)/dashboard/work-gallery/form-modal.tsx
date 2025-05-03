@@ -32,12 +32,12 @@ import { showErrorToast } from "@/lib/client-utils";
 import { create, getDetail, update } from "@/services/api/work-gallery";
 import { FileUploader } from "@/components/upload/file-uploader";
 import { useAsyncList } from "@react-stately/data";
-import { getSkills } from "@/services/skills-api";
 import _ from "lodash";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { techProjectLinkOptions } from "@/lib/select-options";
 import { useQuery } from "@tanstack/react-query";
+import { getSkills } from "@/services/api/metadata";
 
 interface PropTypes {
   isOpen: boolean;
@@ -112,9 +112,14 @@ export default function TechProjectFormModal({
 
   const skillsList = useAsyncList<string>({
     async load({ signal, filterText }) {
-      const items = await getSkills({ q: filterText });
+      const { data, error } = await getSkills({ query: filterText });
+      if (error) {
+        return {
+          items: [],
+        };
+      }
       return {
-        items,
+        items: data?.list?.map((item) => item.name) || [],
       };
     },
   });

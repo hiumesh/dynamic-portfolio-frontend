@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { get } from "@/services/api/portfolio";
-import { Chip, Spinner } from "@heroui/react";
+import { getSkills } from "@/services/api/portfolio";
+import { Avatar, Chip, Spinner } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Edit3 } from "lucide-react";
 import { useState } from "react";
@@ -13,17 +13,18 @@ export default function SkillsSection() {
     visible: false,
   });
   const { data, error, isLoading, isRefetching, refetch } = useQuery({
-    queryKey: ["users_portfolio"],
+    queryKey: ["users_portfolio_skills"],
     queryFn: async () => {
-      const response = await get();
+      const response = await getSkills();
       if (response.error) {
         throw new Error(response.error.message);
       }
       return response.data;
     },
+    refetchOnWindowFocus: false,
   });
 
-  const skills = data?.skills;
+  const skills = data;
 
   if (error) return <></>;
   return (
@@ -43,15 +44,28 @@ export default function SkillsSection() {
       </div>
       <div className="flex flex-wrap gap-2 p-2">
         {skills?.map((skill) => (
-          <Chip key={skill} variant="solid" color="secondary">
-            {skill}
+          <Chip
+            key={skill.id}
+            variant="solid"
+            color="secondary"
+            size="lg"
+            startContent={
+              <Avatar
+                name={skill.name}
+                className="w-7 h-7"
+                radius="full"
+                src={skill.image}
+              />
+            }
+          >
+            {skill.name}
           </Chip>
         ))}
       </div>
       <SkillsFormModal
         isOpen={form.visible}
         hide={() => setForm({ visible: false })}
-        editData={skills || []}
+        editData={skills?.map((skill) => skill.name) || []}
         onSuccess={() => refetch()}
       />
     </section>

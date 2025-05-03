@@ -2,6 +2,7 @@
 
 import { REST_URL } from "@/lib/constants";
 import { fetchWithAuth, processFetchResponse } from "@/lib/server-utils";
+import { Skills } from "@/types/api/metadata";
 
 export async function getAll({
   cursor,
@@ -44,6 +45,7 @@ export async function getSubDomainBySlug(
     | "certifications"
     | "hackathons"
     | "works"
+    | "skills"
 ) {
   const response = await fetchWithAuth(
     `${REST_URL}/portfolio/${slug}/${module}`,
@@ -59,6 +61,7 @@ export async function getSubDomainBySlug(
     | UserCertifications
     | UserHackathons
     | WorkGalleryItems
+    | Skills
   >(response);
 }
 
@@ -89,11 +92,39 @@ export async function takedown() {
   return processFetchResponse(response);
 }
 
+export async function getSkills() {
+  const response = await fetchWithAuth(`${REST_URL}/portfolio/skills`, {
+    cache: "no-store",
+  });
+  return processFetchResponse<Skills>(response);
+}
+
 export async function updateSkills(body: any) {
   const response = await fetchWithAuth(`${REST_URL}/portfolio/skills`, {
     cache: "no-store",
     method: "PUT",
     body: JSON.stringify(body),
+  });
+  return processFetchResponse(response);
+}
+
+export async function upsertResume(url?: string) {
+  const response = await fetchWithAuth(`${REST_URL}/portfolio/resume`, {
+    cache: "no-store",
+    method: "PUT",
+    body: JSON.stringify({ resume_url: url }),
+  });
+  return processFetchResponse(response);
+}
+
+export async function updateProfileAttachment(
+  module: "resume" | "about_image" | "hero_image",
+  url?: string
+) {
+  const response = await fetchWithAuth(`${REST_URL}/portfolio/attachments`, {
+    cache: "no-store",
+    method: "PUT",
+    body: JSON.stringify({ module, url }),
   });
   return processFetchResponse(response);
 }

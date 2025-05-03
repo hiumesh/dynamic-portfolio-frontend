@@ -18,12 +18,14 @@ type Context = {
   profile: undefined | null | UserProfile;
   setProfile: Dispatch<SetStateAction<UserProfile | null | undefined>>;
   refreshProfile: () => Promise<void>;
+  getUserProfile: () => Promise<void>;
 };
 
 const AppContext = createContext<Context>({
   profile: undefined,
   setProfile: () => {},
   refreshProfile: () => new Promise((resolve, reject) => {}),
+  getUserProfile: () => new Promise((resolve, reject) => {}),
 });
 
 export default function AppContextProvider({
@@ -51,28 +53,28 @@ export default function AppContextProvider({
     }
   }, []);
 
-  useEffect(() => {
-    async function getUserProfile() {
-      try {
-        const session = await supabase.auth.getSession();
+  const getUserProfile = useCallback(async () => {
+    try {
+      const session = await supabase.auth.getSession();
 
-        if (!session.data.session || session.error) {
-          setProfile(null);
-          return;
-        }
+      if (!session.data.session || session.error) {
+        setProfile(null);
+        return;
+      }
 
-        const { data: profile, error } = await getProfile();
+      const { data: profile, error } = await getProfile();
 
-        if (error) {
-          setProfile(null);
-          showErrorToast(error, "There was a problem with your request.");
-        } else setProfile(profile);
-      } catch (error: any) {
+      if (error) {
         setProfile(null);
         showErrorToast(error, "There was a problem with your request.");
-      }
+      } else setProfile(profile);
+    } catch (error: any) {
+      setProfile(null);
+      showErrorToast(error, "There was a problem with your request.");
     }
+  }, []);
 
+  useEffect(() => {
     getUserProfile();
   }, []);
 
@@ -82,6 +84,7 @@ export default function AppContextProvider({
         profile,
         setProfile,
         refreshProfile,
+        getUserProfile,
       }}
     >
       {children}

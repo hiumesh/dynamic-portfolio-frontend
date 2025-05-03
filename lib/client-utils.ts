@@ -1,11 +1,13 @@
 "use client";
 
-import { toast } from "sonner";
 import { getErrorMessage } from "./errors";
+import { addToast } from "@heroui/react";
 
 export function showErrorToast(err: unknown, fallbackMessage?: string) {
   const errorMessage = getErrorMessage(err);
-  return toast.error(
-    errorMessage || fallbackMessage || "Something went wrong!"
-  );
+  addToast({
+    title: "Something Went Wrong!",
+    description: errorMessage || fallbackMessage || "Something went wrong",
+    color: "danger",
+  });
 }

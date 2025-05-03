@@ -21,6 +21,7 @@ import {
 import { CaretSortIcon, ComponentPlaceholderIcon } from "@radix-ui/react-icons";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { useAppContext } from "@/providers/app-context";
 
 export function NavUser({
   user,
@@ -32,6 +33,7 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const { getUserProfile } = useAppContext();
   const supabase = createClient();
   const router = useRouter();
 
@@ -40,6 +42,7 @@ export function NavUser({
     if (error) {
       console.log(error);
     } else {
+      await getUserProfile();
       router.replace("/signin");
     }
   };

@@ -8,11 +8,11 @@ import {
 import { showErrorToast } from "@/lib/client-utils";
 import { skillsFormSchema } from "@/lib/zod-schema";
 import { updateSkills } from "@/services/api/portfolio";
-import { getSkills } from "@/services/skills-api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Autocomplete,
   AutocompleteItem,
+  Avatar,
   Button,
   Chip,
   Modal,
@@ -20,12 +20,16 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 import { useAsyncList } from "@react-stately/data";
 import _ from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { getSkills } from "@/services/api/metadata";
+import { Check } from "lucide-react";
 
 interface PropTypes {
   isOpen: boolean;
@@ -41,6 +45,7 @@ export default function SkillsFormModal({
   editData,
 }: PropTypes) {
   const [loading, setLoading] = useState(false);
+  const [input, setInput] = useState("");
 
   const form = useForm<z.infer<typeof skillsFormSchema>>({
     defaultValues: {},
@@ -71,11 +76,17 @@ export default function SkillsFormModal({
     }
   };
 
-  const skillsList = useAsyncList<string>({
+  const skillsList = useAsyncList<{ name: string; image?: string }>({
     async load({ signal, filterText }) {
-      const items = await getSkills({ q: filterText });
+      const { data, error } = await getSkills({ query: filterText });
+      if (error) {
+        return {
+          items: [],
+        };
+      }
+
       return {
-        items,
+        items: data?.list || [],
       };
     },
   });
@@ -145,10 +156,25 @@ export default function SkillsFormModal({
                               selectedKey={null}
                               // inputValue={skillsList.filterText}
                               isLoading={skillsList.isLoading}
-                              items={skillsList.items.map((item) => ({
-                                value: item,
-                                label: item,
-                              }))}
+                              items={
+                                input &&
+                                skillsList.items.findIndex(
+                                  (item) => item.name === input
+                                ) === -1
+                                  ? [
+                                      { value: input, label: input },
+                                      ...skillsList.items.map((item) => ({
+                                        value: item.name,
+                                        label: item.name,
+                                        image: item.image,
+                                      })),
+                                    ]
+                                  : skillsList.items.map((item) => ({
+                                      value: item.name,
+                                      label: item.name,
+                                      image: item.image,
+                                    }))
+                              }
                               disableSelectorIconRotation={true}
                               disableAnimation={true}
                               scrollShadowProps={{
@@ -169,10 +195,21 @@ export default function SkillsFormModal({
                                 domainSet.add(key);
                                 field.onChange(Array.from(domainSet));
                               }}
-                              onInputChange={handleSkillsInputChange}
+                              inputValue={input}
+                              onInputChange={(v) => {
+                                setInput(v || "");
+                                handleSkillsInputChange(v);
+                              }}
                             >
                               {(skill) => (
-                                <AutocompleteItem key={skill.value}>
+                                <AutocompleteItem
+                                  key={skill.value}
+                                  endContent={
+                                    field.value?.includes(skill.value) ? (
+                                      <Check strokeWidth={1.4} size={18} />
+                                    ) : null
+                                  }
+                                >
                                   {skill.label}
                                 </AutocompleteItem>
                               )}

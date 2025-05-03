@@ -1,7 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { get } from "@/services/api/portfolio";
+import {
+  get,
+  updateProfileAttachment,
+  upsertResume,
+} from "@/services/api/portfolio";
 import { Chip, Spinner } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Edit3, Link as LinkIcon } from "lucide-react";
@@ -9,21 +13,92 @@ import Image from "next/image";
 import ProfileFormModal from "../edit-profile-modal";
 import { useState } from "react";
 import Link from "next/link";
+import { FileProxy, FileUploader } from "@/components/upload/file-uploader";
+import { showErrorToast } from "@/lib/client-utils";
 
 export default function BasicSection() {
   const [form, setForm] = useState({
     visible: false,
   });
+  const [attachments, setAttachments] = useState<
+    Record<string, FileProxy | undefined>
+  >({});
   const { data, error, isLoading, isRefetching, refetch } = useQuery({
-    queryKey: ["users_portfolio"],
+    queryKey: ["users_portfolio", "basic_details"],
     queryFn: async () => {
       const response = await get();
       if (response.error) {
         throw new Error(response.error.message);
       }
-      return response.data;
+      const data = response.data;
+      setAttachments((p) => ({
+        resume: data?.basic_details.resume
+          ? {
+              name: "Your Resume",
+              type: "application/pdf",
+              size: 0,
+              url: data?.basic_details.resume,
+            }
+          : undefined,
+        hero_image: data?.basic_details.hero_image
+          ? {
+              name: "Hero Image",
+              type: "image/jpeg",
+              size: 0,
+              url: data?.basic_details.hero_image,
+            }
+          : undefined,
+        about_image: data?.basic_details.about_image
+          ? {
+              name: "About Image",
+              type: "image/jpeg",
+              size: 0,
+              url: data?.basic_details.about_image,
+            }
+          : undefined,
+      }));
+      return data;
     },
+    refetchOnWindowFocus: false,
   });
+
+  const handleResumeUpload = async (
+    module: "resume" | "about_image" | "hero_image",
+    file?: FileProxy
+  ) => {
+    const oldFile = attachments[module];
+    try {
+      if (file) {
+        setAttachments((prev) => ({
+          ...prev,
+          [module]: {
+            ...file,
+            name: "Your Resume",
+            type: "application/pdf",
+          },
+        }));
+      } else setAttachments((prev) => ({ ...prev, [module]: undefined }));
+      if (
+        file?.status === "success" ||
+        (file === undefined && file != oldFile)
+      ) {
+        const { error } = await updateProfileAttachment(module, file?.url);
+        if (error) {
+          showErrorToast(error);
+          setAttachments((prev) => ({
+            ...prev,
+            [module]: oldFile,
+          }));
+        }
+      }
+    } catch (error) {
+      showErrorToast(oldFile);
+      setAttachments((prev) => ({
+        ...prev,
+        [module]: oldFile,
+      }));
+    }
+  };
 
   const basicDetails = data?.basic_details;
 
@@ -33,16 +108,18 @@ export default function BasicSection() {
     <section className="mx-4 border shadow rounded-md">
       <div className="flex items-center justify-between px-2 py-1 border-b">
         <h1 className="text-lg">Basic</h1>
-        {isLoading || isRefetching ? (
-          <Spinner size="sm" />
-        ) : (
-          <Button
-            className="h-min px-3 py-1.5 gap-1 rounded-full font-normal text-xs"
-            onClick={() => setForm({ visible: true })}
-          >
-            <Edit3 /> Edit
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {isLoading || isRefetching ? (
+            <Spinner size="sm" />
+          ) : (
+            <Button
+              className="h-min px-3 py-1.5 gap-1 rounded-full font-normal text-xs"
+              onClick={() => setForm({ visible: true })}
+            >
+              <Edit3 /> Edit
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="flex gap-3 p-2">
@@ -103,15 +180,63 @@ export default function BasicSection() {
               </div>
             </div>
           ) : null}
+
+          <div className="flex items-start gap-3">
+            <div>
+              <h4 className="text-gray-500 text-base">Resume</h4>
+              <FileUploader
+                variant="tile"
+                multiple={false}
+                value={attachments.resume ? [attachments.resume] : []}
+                onValueChange={(file) => {
+                  handleResumeUpload("resume", file?.at(0));
+                }}
+                accept={{
+                  "application/pdf": [],
+                }}
+                maxFileCount={1}
+                maxSize={20 * 1024 * 1024}
+                className="w-24 h-24"
+              />
+            </div>
+
+            <div>
+              <h4 className="text-gray-500 text-base">Hero Image</h4>
+              <FileUploader
+                variant="tile"
+                multiple={false}
+                value={attachments.hero_image ? [attachments.hero_image] : []}
+                onValueChange={(file) => {
+                  handleResumeUpload("hero_image", file?.at(0));
+                }}
+                maxFileCount={1}
+                maxSize={20 * 1024 * 1024}
+                className="w-24 h-24"
+              />
+            </div>
+            <div>
+              <h4 className="text-gray-500 text-base">About Image</h4>
+              <FileUploader
+                variant="tile"
+                multiple={false}
+                value={attachments.about_image ? [attachments.about_image] : []}
+                onValueChange={(file) => {
+                  handleResumeUpload("about_image", file?.at(0));
+                }}
+                maxFileCount={1}
+                maxSize={20 * 1024 * 1024}
+                className="w-24 h-24"
+              />
+            </div>
+          </div>
         </div>
         {basicDetails?.avatar ? (
-          <div className="p-4 w-28 h-28 rounded-full bg-gray-100">
+          <div className="relative p-4 w-28 h-28 rounded-full overflow-hidden border-2 bg-gray-100">
             <Image
               src={basicDetails?.avatar}
               alt="avatar"
-              width={300}
-              height={300}
-              className="object-contain"
+              fill
+              className="object-cover"
             />
           </div>
         ) : null}

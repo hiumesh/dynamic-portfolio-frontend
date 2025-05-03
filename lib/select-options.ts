@@ -1,4 +1,8 @@
 export const workDomainOptions = [
+  {
+    label: "LLM Engineer",
+    value: "LLM Engineer",
+  },
   { label: "Backend Developer", value: "Backend Developer" },
   { label: "Big Data Engineer", value: "Big Data Engineer" },
   { label: "Blockchain Developer", value: "Blockchain Developer" },

@@ -21,7 +21,7 @@ import { BUCKET_URL } from "@/lib/constants";
 import _, { set } from "lodash";
 import { Separator } from "../ui/separator";
 
-interface FileProxy {
+export interface FileProxy {
   id?: string;
   name: string;
   type: string;
@@ -480,39 +480,41 @@ export function FileUploader(props: FileUploaderProps) {
             }
           />
         ))}
-        <Dropzone
-          onDrop={onDrop}
-          accept={accept}
-          maxSize={maxSize}
-          maxFiles={maxFileCount}
-          multiple={true}
-          disabled={isDisabled}
-        >
-          {({ getRootProps, getInputProps, isDragActive }) => (
-            <div
-              {...getRootProps()}
-              className={cn(
-                "group relative grid h-28 w-28 cursor-pointer place-items-center rounded-lg border-[1.4px] border-dashed border-muted-foreground/25 p-2 text-center transition hover:bg-gray-100/35 bg-gray-100",
-                "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                isDragActive && "border-muted-foreground/50",
-                isDisabled && "pointer-events-none opacity-60",
-                className
-              )}
-              {...dropzoneProps}
-            >
-              <input {...getInputProps()} />
+        {multiple || maxFileCount > 1 || !files?.length ? (
+          <Dropzone
+            onDrop={onDrop}
+            accept={accept}
+            maxSize={maxSize}
+            maxFiles={maxFileCount}
+            multiple={true}
+            disabled={isDisabled}
+          >
+            {({ getRootProps, getInputProps, isDragActive }) => (
+              <div
+                {...getRootProps()}
+                className={cn(
+                  "group relative grid h-28 w-28 cursor-pointer place-items-center rounded-lg border-[1.4px] border-dashed border-muted-foreground/25 p-2 text-center transition hover:bg-gray-100/35 bg-gray-100",
+                  "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                  isDragActive && "border-muted-foreground/50",
+                  isDisabled && "pointer-events-none opacity-60",
+                  className
+                )}
+                {...dropzoneProps}
+              >
+                <input {...getInputProps()} />
 
-              <div className="flex flex-col items-center justify-center gap-1 sm:px-2">
-                <Plus
-                  strokeWidth={1.5}
-                  size={18}
-                  className="text-muted-foreground"
-                />
-                <p className="text-sm text-muted-foreground">Upload</p>
+                <div className="flex flex-col items-center justify-center gap-1 sm:px-2">
+                  <Plus
+                    strokeWidth={1.5}
+                    size={18}
+                    className="text-muted-foreground"
+                  />
+                  <p className="text-sm text-muted-foreground">Upload</p>
+                </div>
               </div>
-            </div>
-          )}
-        </Dropzone>
+            )}
+          </Dropzone>
+        ) : null}
       </div>
     );
   }
