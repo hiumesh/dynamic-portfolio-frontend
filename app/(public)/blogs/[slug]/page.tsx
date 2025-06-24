@@ -3,6 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
 import Header from "./header";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import Body from "./body";
+import Comments from "./comments";
 
 export default async function Blog({
   params,
@@ -27,6 +28,7 @@ export default async function Blog({
       <MaxWidthWrapper className="max-w-screen-md">
         <Header />
         <Body />
+        <Comments />
       </MaxWidthWrapper>
     </section>
   );

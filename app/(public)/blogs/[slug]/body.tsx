@@ -2,9 +2,9 @@
 
 import { getDetailBySlug } from "@/services/api/blog";
 import { useQuery } from "@tanstack/react-query";
-import MDEditor from "@uiw/react-md-editor";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import RenderMarkdown from "../../../../components/parse-markdown";
 
 export default function Body() {
   const params = useParams<{ slug: string }>();
@@ -34,7 +34,7 @@ export default function Body() {
           />
         </div>
       ) : null}
-      <MDEditor.Markdown source={data.body} />
+      <RenderMarkdown markdown={data.body} />
     </div>
   );
 }
