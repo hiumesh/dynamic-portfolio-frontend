@@ -4,6 +4,7 @@ import Header from "./header";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import Body from "./body";
 import Comments from "./comments";
+import ActionMenu from "./menu";
 
 export default async function Blog({
   params,
@@ -27,6 +28,7 @@ export default async function Blog({
     <section className="p-10">
       <MaxWidthWrapper className="max-w-screen-md">
         <Header />
+        <ActionMenu />
         <Body />
         <Comments />
       </MaxWidthWrapper>

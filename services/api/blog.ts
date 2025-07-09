@@ -131,3 +131,39 @@ export async function updateMetadata(data: any) {
 
   return processFetchResponse(response);
 }
+
+export async function blogReaction({
+  blogId,
+  reaction,
+  action,
+}: {
+  blogId: string | number;
+  reaction: string;
+  action: string;
+}) {
+  const response = await fetchWithAuth(`${REST_URL}/blogs/${blogId}/reaction`, {
+    cache: "no-store",
+    method: "PUT",
+    body: JSON.stringify({ reaction, action }),
+  });
+
+  return processFetchResponse(response);
+}
+
+export async function bookmark(blogId: string | number) {
+  const response = await fetchWithAuth(`${REST_URL}/blogs/${blogId}/bookmark`, {
+    cache: "no-store",
+    method: "PUT",
+  });
+
+  return processFetchResponse(response);
+}
+
+export async function removeBookmark(blogId: string | number) {
+  const response = await fetchWithAuth(`${REST_URL}/blogs/${blogId}/bookmark`, {
+    cache: "no-store",
+    method: "DELETE",
+  });
+
+  return processFetchResponse(response);
+}

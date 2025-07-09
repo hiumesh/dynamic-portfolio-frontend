@@ -42,6 +42,17 @@ interface UserProfile {
   created_at: string;
 }
 
+interface ListUser {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string | null;
+  slug: string;
+  tagline: string | null;
+}
+
+type ListUsers = ListUser[];
+
 interface UserEducation {
   id: number;
   order_index: number;

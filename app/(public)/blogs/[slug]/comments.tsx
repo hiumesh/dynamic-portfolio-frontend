@@ -229,7 +229,7 @@ export default function Comments() {
   if (!data || error || isLoading) return null;
 
   return (
-    <div className="space-y-7">
+    <div className="space-y-7" id="comments">
       <h1 className="text-xl">Comments</h1>
       <CommentInput
         handleSubmit={(body) => newCommentMutation.mutateAsync(body)}

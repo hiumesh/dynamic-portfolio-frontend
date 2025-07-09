@@ -8,7 +8,12 @@ interface BlogPost {
   publisher_avatar: string;
   publisher_name: string;
   published_at: string;
-
+  comments_count?: number;
+  reactions_metadata?: {
+    clap?: number;
+    like?: number;
+    heart?: number;
+  };
   created_at: string;
   updated_at: string;
 }
@@ -16,6 +21,8 @@ interface BlogPost {
 type BlogPosts = BlogPost[];
 
 type Blog = {
+  reactions: string[];
+  is_bookmarked: boolean;
   body: string;
 } & BlogPost;
 
